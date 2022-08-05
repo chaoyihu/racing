@@ -1,0 +1,7 @@
+# Local environment settings
+.env
+
+# Temp Files
+*.pyc
+*.swp
+

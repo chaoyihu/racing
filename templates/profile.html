@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  
+  <head>
+    <style>
+      .button {
+        background-color: #ADD0E9;
+        border: none;
+        color: black;
+        padding: 10px 20px;
+        text-align: center;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
+    <script type="text/javascript" src="/static/register.js"></script>
+
+    <div id="main">
+      
+      <div style="float: left; width: 30%">
+        <section id="user-info">
+          User info
+        </section>
+      </div>
+      
+      <div style="float: left; width: 70%">
+        <section id="user-actions">
+          <button id="initiate-race_btn" onclick="client.initiate_race();">Initiate a race</button>
+          <button id="join-race_btn" onclick="client.join_race();">Join a race</button>
+          <section id="watch-section">
+            <p id="watching-section-title">Want to watch a race?</p>
+            <input type="text" placeholder="Search..">
+            <button type="search-btn">Search</button>
+            <div id="feed">
+            </div>
+          </section>
+        </section>
+      </div>
+
+    </div>
+
+  </body>
+
+</html>

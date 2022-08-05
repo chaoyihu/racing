@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  
+  <head>
+    <style>
+      #message_pane {
+        background-color: #c5c7c5;
+        height: 300px;
+        width: 90%;
+        padding-left: 5px;
+        overflow: auto;
+      }   
+      .button {
+        background-color: #ADD0E9;
+        border: none;
+        color: black;
+        padding: 10px 20px;
+        text-align: center;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
+    <script type="text/javascript" src="/static/index.js"></script>
+
+    <div>
+      <section id="title-section">
+        <h1>Racing</h1>
+      </section>
+    </div>
+
+    <div>
+      <section id="main-section">
+      <form>
+        <label for="username"><b>Username </b></label><br>
+        <input type="text" id="username_box_id" name="username_box"><br>
+        <label for="username"><b>Password </b></label><br>
+        <input type="password" id="password_box_id" name="password_box"><br>
+      </form>
+      <button id="login_btn" onclick="client.login();">Log me in</button>
+      <p>New user? <a href="./register">Register here</a>.</p>
+      </section>
+    </div>
+
+  </body>
+
+</html>
