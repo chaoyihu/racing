@@ -28,11 +28,11 @@ def make_app():
             (r"/profile/([^/]+)", ProfileHandler),
             # race
             (r"/initiate-race",   InitiateRaceHandler),
-            (r"/join-race",       JoinRacehandler),
+            (r"/join-race",       JoinRaceHandler),
             (r"/race/([^/]+)",    RaceHandler),
             # static
             (r"/static/(.*)",     StaticFileHandler, {"path": "./static/"}),
-            (r"/(favicon.ico)",   StaticFileHandler, {"path": "./static/images/"})
+            (r"/(favicon.ico)",   StaticFileHandler, {"path": "./static/imgs/"})
         ]
     return Application(routing_table)
 

@@ -1,10 +1,9 @@
-APScheduler==3.9.1
-lxml
-pip==20.0.2
-requests          
-simplejson        
-tornado==6.1
-websocket-client==1.3.3
-websockets==10.2
-python-dotenv==0.20.0
-redis
+APScheduler           ==3.9.1      
+pip                   ==20.0.2     
+python-dotenv         ==0.20.0     
+redis                 ==4.3.4      
+requests              ==2.28.1     
+simplejson            ==3.17.6     
+tornado               ==6.1        
+websocket-client      ==1.3.3      
+websockets            ==10.2       

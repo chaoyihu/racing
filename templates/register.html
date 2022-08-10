@@ -2,22 +2,14 @@
 <html lang="en-US">
   
   <head>
-    <style>
-      .button {
-        background-color: #ADD0E9;
-        border: none;
-        color: black;
-        padding: 10px 20px;
-        text-align: center;
-        font-size: 16px;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="./static/style.css" />
   </head>
 
   <body>
 
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
-    <script type="text/javascript" src="/static/register.js"></script>
+    <script type="text/javascript" src="./static/common.js"></script>
+    <script type="text/javascript" src="./static/register.js"></script>
 
     <div id="main">
       
@@ -30,19 +22,16 @@
       <div style="float: left; width: 50%">
         <section id="info_section">
           <form>
-            <label for="email"><b>Email</b></label><br>
-            <input type="text" id="email_box_id" name="email_box"><br>
+            <label for="username"><b>Name yourself</b></label><br>
+            <input type="text" id="username_box_id" name="username_box"><br>
             <label for="password"><b>Password</b></label><br>
             <input type="password" id="password_box_id" name="password_box"><br>
             <label for="confirm_password"><b>Confirm password</b></label><br>
             <input type="password" id="confirm_password_box_id" name="confirm_password_box"><br>
-            <label for="username"><b>Name yourself</b></label><br>
-            <input type="text" id="username_box_id" name="username_box"><br>
           </form>
-          <button id="register_btn" onclick="client.register();">Register</button>
+          <button id="register_btn" class="btn btn-primary btn-rounded" onclick="register()">Register</button>
         </section>
       </div>
-
     </div>
 
   </body>
