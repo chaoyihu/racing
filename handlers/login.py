@@ -3,9 +3,11 @@ import json
 import redis
 import uuid
 from tornado.web import RequestHandler
+from tornado.escape import xhtml_escape
 
 from dotenv import load_dotenv
 load_dotenv()
+
 
 async def register_session(username):
     sid = str(uuid.uuid1())
@@ -39,8 +41,9 @@ class LoginHandler(RequestHandler):
         if validity: # Assign or renew session id.
             session_id = text
             self.write(json.dumps({
-                "type": "session_id",
-                "session_id": session_id
+                "type": "redirect",
+                "session_id": session_id,
+                "url": "/profile/" + session_id
                 }))
         else:                   # Alert error.
             error = text
@@ -59,7 +62,6 @@ class LoginHandler(RequestHandler):
             if not db_password:
                 return False, "Username does not exist."
             if password != db_password:
-                print(password, type(password), db_password, type(db_password))
                 return False, "Wrong password."
         if credential["type"] == "session_id":
             username = r.hget("session_id_to_username", credential["session_id"])
