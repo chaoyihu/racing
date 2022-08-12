@@ -4,15 +4,27 @@ function handle_server_message(txt) {
     if (obj["type"] == "log") {
         console.log(obj["text"]);
     };
+    
     if (obj["type"] == "alert") {
         alert(obj["text"]);
     };
+
     if (obj["type"] == "redirect") {
-        var session_id = obj["session_id"]
-        console.log(session_id);
-        document.cookie = session_id;
-        my_redirect(obj["url"]);
+        my_redirect(obj["url"], obj["protocol"]);
+        if (document.cookie !== "") {
+          var cookie = JSON.parse(document.cookie);
+        } else {
+          var cookie = {};
+        }
+        Object.keys(obj).forEach(function(key) {
+          if (key !== "type" && key !== "url" && key !== "protocol") {
+            cookie[key] = obj[key];
+          }
+        })
+        document.cookie = JSON.stringify(cookie);
+        console.log(document.cookie);
     };
+
     if (obj["type"] == "user_data") {
        document.getElementById("user_info").innerHTML = `
            <p>username: ${obj["username"]}</p>
@@ -20,16 +32,19 @@ function handle_server_message(txt) {
            <p>level: ${obj["user_level"]}</p>
        ` 
     };
+
     if (obj["type"] == "task_info") {
-      task_id = obj["id"]
-      task_link = obj["href"];
-      insert_task_row(task_id, task_link);
+      tid = obj["id"];
+      tstatus = obj["status"];
+      console.log(`${tid} status ${tstatus}`);
     };
+
 };
 
 
-function my_redirect(url) {
-    var complete_href = window.location.protocol + '//' + window.location.host + url; // window.location.href will not work on localhost.
+function my_redirect(url, protocol) {
+    console.log(url + protocol);
+    var complete_href = protocol + '://' + window.location.host + url; // window.location.href will not work on localhost.
     console.log("redirecting to " + complete_href);
     window.location.replace(complete_href); 
 };

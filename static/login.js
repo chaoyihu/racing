@@ -1,9 +1,10 @@
 if (document.cookie !== null && document.cookie !== "") {
     console.log("Sending session id to server:");
     console.log(document.cookie);
+    session_id = JSON.parse(document.cookie)["session_id"];
     let data = `{
         "type"      : "session_id", 
-        "session_id": "${document.cookie}"
+        "session_id": "${session_id}"
     }`;
     var url = window.location.host + "/login";
     var protocol = "http";

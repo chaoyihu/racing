@@ -5,7 +5,7 @@ from handlers.index import IndexHandler
 from handlers.login import LoginHandler
 from handlers.register import RegisterHandler
 from handlers.profile import ProfileHandler
-from handlers.initiate_race import InitiateRaceHandler
+from handlers.initiate_race import InitiateRaceBaseHandler,InitiateRaceHandler 
 from handlers.join_race import JoinRaceHandler
 from handlers.race import RaceHandler
 from tornado.ioloop import IOLoop
@@ -27,7 +27,8 @@ def make_app():
             (r"/register",        RegisterHandler),
             (r"/profile/([^/]+)", ProfileHandler),
             # race
-            (r"/initiate-race",   InitiateRaceHandler),
+            (r"/initiate-race",   InitiateRaceBaseHandler),
+            (r"/initiate-race/([^/]+)",   InitiateRaceHandler),
             (r"/join-race",       JoinRaceHandler),
             (r"/race/([^/]+)",    RaceHandler),
             # static

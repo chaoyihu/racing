@@ -42,8 +42,9 @@ class LoginHandler(RequestHandler):
             session_id = text
             self.write(json.dumps({
                 "type": "redirect",
+                "protocol": "http",
+                "url": "/profile/" + session_id,
                 "session_id": session_id,
-                "url": "/profile/" + session_id
                 }))
         else:                   # Alert error.
             error = text
