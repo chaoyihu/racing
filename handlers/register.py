@@ -23,7 +23,7 @@ class RegisterHandler(RequestHandler):
             return None
         r = redis.Redis(charset="utf-8", decode_responses=True)
         print("checking if username is available.")
-        exists = r.hexists("username_to_password", data["username"])
+        exists = r.exists(data["username"] + ":password")
         if exists:
             self.write(json.dumps({
                 "type": "alert",
@@ -31,7 +31,7 @@ class RegisterHandler(RequestHandler):
                 }))
         else:
             print("assign a session id")
-            r.hset("username_to_password", data["username"], data["password"])
+            r.set(data["username"] + ":password", data["password"])
             session_id = await register_session(data["username"])
             self.write(json.dumps({
                 "type": "redirect",
@@ -39,5 +39,5 @@ class RegisterHandler(RequestHandler):
                 "url": "/profile/" + session_id,
                 "session_id": session_id,
                 }))
-            print(data["username"], r.hget("session_id_to_username", session_id))
+            print(data["username"], r.get(session_id +":username"))
 

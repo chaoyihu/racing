@@ -8,22 +8,24 @@ function handle_server_message(txt) {
     if (obj["type"] == "alert") {
         alert(obj["text"]);
     };
+    
+    if (obj["type"] == "ping") {
+        console.log("Ping");
+        ws.send(`{"type": "pong"}`);
+    };
 
     if (obj["type"] == "redirect") {
         my_redirect(obj["url"], obj["protocol"]);
-        if (document.cookie !== "") {
-          var cookie = JSON.parse(document.cookie);
-        } else {
-          var cookie = {};
-        }
-        Object.keys(obj).forEach(function(key) {
-          if (key !== "type" && key !== "url" && key !== "protocol") {
-            cookie[key] = obj[key];
-          }
-        })
-        document.cookie = JSON.stringify(cookie);
-        console.log(document.cookie);
+        delete obj["type"];
+        delete obj["url"];
+        delete obj["protocol"];
+        add_cookie(obj);
     };
+    
+    if (obj["type"] == "cookie") {
+        delete obj["type"];
+        add_cookie(obj);
+    }
 
     if (obj["type"] == "user_data") {
        document.getElementById("user_info").innerHTML = `
@@ -41,6 +43,18 @@ function handle_server_message(txt) {
 
 };
 
+function add_cookie(obj) {
+  if (document.cookie !== "") {
+    var cookie = JSON.parse(document.cookie);
+  } else {
+    var cookie = {};
+  }
+  Object.keys(obj).forEach(function(key) {
+    cookie[key] = obj[key];
+  })
+  document.cookie = JSON.stringify(cookie);
+  console.log(document.cookie);
+};
 
 function my_redirect(url, protocol) {
     console.log(url + protocol);

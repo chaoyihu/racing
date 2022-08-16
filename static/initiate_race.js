@@ -1,3 +1,15 @@
+// Create new race
+let data = `{
+    "type"    : "request_race"
+}`;
+var url = window.location.href;
+var protocol = "http";
+var header_params = new Map();
+header_params.set("Content-Type", "application/json");
+my_xhr_post(data, url, protocol, header_params);
+// Server will reply with a race_id, which will be handled by 
+// `handle_server_message` and race_id will be added to cookie.
+ 
 var counter = 0;
 var all_tasks = new Map();
 
@@ -97,5 +109,14 @@ function delete_task(tid) {
 };
 
 function initiate() {
+  let data = `{
+      "type"    : "initiate_race"
+  }`;
+  var url = window.location.href;
+  var protocol = "http";
+  var header_params = new Map();
+  header_params.set("Content-Type", "application/json");
+  my_xhr_post(data, url, protocol, header_params);
+  // server will redirect
 };
 

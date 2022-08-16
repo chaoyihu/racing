@@ -12,7 +12,7 @@ load_dotenv()
 async def register_session(username):
     sid = str(uuid.uuid1())
     r = redis.Redis(charset="utf-8", decode_responses=True)
-    r.hset("session_id_to_username", sid, username)
+    r.set(sid + ":username", username)
     return sid
 
 class LoginHandler(RequestHandler):
@@ -59,13 +59,13 @@ class LoginHandler(RequestHandler):
         if credential["type"] == "password":
             username = credential["username"]
             password = credential["password"]
-            db_password = r.hget("username_to_password", username)
+            db_password = r.get(username + ":password")
             if not db_password:
                 return False, "Username does not exist."
             if password != db_password:
                 return False, "Wrong password."
         if credential["type"] == "session_id":
-            username = r.hget("session_id_to_username", credential["session_id"])
+            username = r.get(credential["session_id"] + ":username")
             if not username:
                 self.write(json.dumps({
                     "type": "log", 

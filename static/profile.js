@@ -13,7 +13,8 @@ function initiate_race() {
 };
 
 function join_race() {
-   my_redirect("/join-race", "http");
+   race_id = document.getElementById("race_id_box");
+   my_redirect("/race/" + race_id, "http");
 };
 
 function search() {
