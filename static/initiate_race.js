@@ -106,11 +106,29 @@ function edit_task(tid) {
 
 function delete_task(tid) {
   document.getElementById(`task_row_${tid.split('+').slice(-1)}`).remove();
+  console.log(`Deleting task, tid: ${tid}`);
+  let data = `{
+      "type"       : "delete_task", 
+      "id"         : "${tid}",
+  }`;
+  var url = window.location.host + window.location.pathname;
+  var protocol = "http";
+  var header_params = new Map();
+  header_params.set("Content-Type", "application/json");
+  my_xhr_post(data, url, protocol, header_params);
 };
 
 function initiate() {
+  // rid is in cookie["race_id"]
+  rtitle = document.getElementById("race-title-box-id").value;
+  rintroduction = document.getElementById("race-introduction-box-id").value;
+  rduration = document.getElementById("race-duration-box-id").value;
+  //rtasks will be retrieved in database by `keys rid+task*`
   let data = `{
-      "type"    : "initiate_race"
+      "type"         : "initiate_race",
+      "title"        : "${rtitle}",
+      "introduction" : "${rintroduction}",
+      "duration"    :  ${rduration}
   }`;
   var url = window.location.href;
   var protocol = "http";

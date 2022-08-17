@@ -29,18 +29,22 @@ function handle_server_message(txt) {
 
     if (obj["type"] == "user_data") {
        document.getElementById("user_info").innerHTML = `
-           <p>username: ${obj["username"]}</p>
-           <p>history: ${obj["user_history"]}</p>
-           <p>level: ${obj["user_level"]}</p>
-       ` 
+         <p>username: ${obj["username"]}</p>
+         <p>history: ${obj["user_history"]}</p>
+         <p>level: ${obj["user_level"]}</p>
+       `; 
     };
 
-    if (obj["type"] == "task_info") {
-      tid = obj["id"];
-      tstatus = obj["status"];
-      console.log(`${tid} status ${tstatus}`);
+    if (obj["type"] == "race_info") {
+      document.race_info = obj;
+      document.getElementById("info-zone").innerHTML = `
+        <h1>${obj["title"]}</h1>
+        <p>Initiated by: ${obj["initiator"]}</p>
+        <p>Duration: ${obj["duration"]} min(s)</p>
+        <p>${obj["introduction"]}</p>
+      `;
+      // rtasks = obj["tasks"]; // Array<tlink, ttitle>
     };
-
 };
 
 function add_cookie(obj) {

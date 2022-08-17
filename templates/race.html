@@ -11,44 +11,74 @@
     <script type="text/javascript" src="/static/common.js"></script>
     <script type="text/javascript" src="/static/race.js"></script>
 
-    <div id="tasks-div" style="float: left; width: 30%">
-      <section id="timer" style="text-align: center; height: 80px">
-      </section>
-      <section id="tasks-list">
-        <p> Tasks will show once race starts.
-      </section>
+    <div id="left-pane" style="float: left; width: 30%; height: 100vh;">
+      <div id="info-zone" style="height:80%; text-align: center; padding: 20px">
+        title, introduction, duration and initiator will be here.
+      </div>
+      <div id="btn-zone" style="height:20%;">
+        <div style="padding: 10px; text-align: center;">
+          <button id="join_btn" onclick="join_race();" class="btn btn-info rounded" style="width: 50%">Join!</button><br>
+        </div>
+        <div style="padding: 10px; text-align: center;">
+          <button id="invite_btn" onclick="copy_invitation();" class="btn btn-info rounded" style="width: 50%">Invite</button>
+        </div>
+      </div>
     </div>
 
-    <div id="racers-div" style="float: left; width: 40%">
-      <section id="racers-title-section" style="text-align: center; height: 80px">
-        Pool
-      </section>
-      <table id="racers-list">
-        <thead>
-          <tr>
-            <td>Racer</td>
-            <td>Bet</td>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- data should be included here -->
-        </tbody>
-        <template id="racer-row">
-          <tr>
-            <td class="record"></td>
-            <td><td>
-          </tr>
-        </template>
-      </table>
+    <div id="mid-pane" style="float: left; width: 40%; height: 100vh; border-style: none none none ridge;">
+
+      <div id="task-pane" style="height: 50%; display: flex; overflow: auto; padding: 20px;">
+        <table id="tasks-table" class="table" style="width:100%">
+          <thead style="background-color:#f8f9fa;">
+            <tr>
+              <td style="width: 50%">Task</td>
+              <td style="width: 20%">Credits</td>
+              <td style="width: 30%">Action</td>
+            </tr>
+          </thead>
+          <tbody id="tasks-tbody">
+            <!-- data should be included here -->
+          </tbody>
+          <template id="task-row">
+            <tr>
+              <td class="record"></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </template>
+        </table>
+      </div>
+      
+      <div id="racer-pane" style="height: 50%; display: flex; overflow: auto; padding: 10px; border-style: ridge none none none;">
+        <table id="racers-table" class="table" style="width:100%">
+          <thead style="background-color:#f8f9fa;">
+            <tr>
+              <td style="width: 50%">Racer</td>
+              <td style="width: 50%">Standing</td>
+            </tr>
+          </thead>
+          <tbody id="racer-tbody">
+            <!-- data should be included here -->
+          </tbody>
+          <template id="racer-row">
+            <tr>
+              <td class="record"></td>
+              <td><td>
+            </tr>
+          </template>
+        </table>
+      </div>
+
     </div>
 
-    <div id="tasks-div" style="float: left; width: 30%">
-      <div id="announcements-div" style="vertical-align: top; height: 200px">
-        Announcements
-      <div>
-      <div id="chat-div" style="vertical-align: top; height:200px">
-        Chat
-      <div>
+    <div id="right-pane" style="float: left; width: 30%; height: 100vh; border-style: none none none ridge;">
+      <div id="chat-pane" style="height: 90%; display: flex; overflow: auto; padding: 20px;">
+          Chat
+      </div>
+      <div style="height: 10%; padding: 10px">
+        <input id="chat-input" class="form-control" style="width: calc(100% - 100px); display: inline;" type="text">
+        <button id="send-btn" class="btn btn-secondary" style="display: inline; width: 80px;" onclick="send_chat_message();">Send</button>
+      </div>
     </div>
 
   </body>

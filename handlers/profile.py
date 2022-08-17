@@ -18,7 +18,7 @@ class ProfileHandler(RequestHandler):
         print("getting user data...")
         session_id = slug
         r = redis.Redis(charset="utf-8", decode_responses=True)
-        username = r.hget("session_id_to_username", session_id)
+        username = r.get(session_id + ":username")
         self.write(json.dumps({
             "type": "user_data",
             "username": username,

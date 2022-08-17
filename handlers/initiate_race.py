@@ -13,23 +13,59 @@ RANDOM_ROLE = ["krill-connoisseur", "squid-advocate", "ocean-goer", "iceberg-spe
 
 async def update_task(tid, ttitle, tdescription, tcredits):
     try:
-        print("visiting database")
         r = redis.Redis(charset="utf-8", decode_responses=True)
         r.set(tid + ":title", ttitle)
         r.set(tid + ":description", tdescription)
         r.set(tid + ":credits", tcredits)
-        print("database set.")
-        print(r.get(tid + ":title"))
+        print("Task info updated.")
+        r.quit()
         return True
     except:
+        r.quit()
         return False
+
+async def delete_task(tid):
+    try:
+        r = redis.Redis(charset="utf-8", decode_responses=True)
+        r.delete(tid + ":title")
+        r.delete(tid + ":description")
+        r.delete(tid + ":credits")
+        print("Task info deleted.")
+        r.quit()
+        return True
+    except:
+        r.quit()
+        return False
+
+async def add_race(rid, rtitle, rintroduction, rduration, rinitiator):
+    try:
+        r = redis.Redis(charset="utf-8", decode_responses=True)
+        r.set(rid + ":title", rtitle)
+        r.set(rid + ":introduction", rintroduction)
+        r.set(rid + ":duration", rduration)
+        r.set(rid + ":initiator", rinitiator)
+        print("Race info added.")
+        r.quit()
+        return True
+    except:
+        r.quit()
+        return False
+
 
 class InitiateRaceHandler(RequestHandler):
 
     async def get(self):
-        html_file = os.getenv("HTML_PATH") + "/initiate_race.html"
-        with open(html_file) as f:
-            self.write(f.read())
+        cookie = json.loads(self.request.headers.get("Cookie"))
+        if "session_id" not in cookie: 
+            self.write(json.dumps({
+                "type": "redirect",
+                "protocol": "http",
+                "url": "/login"
+                }))
+        else:
+            html_file = os.getenv("HTML_PATH") + "/initiate_race.html"
+            with open(html_file) as f:
+                self.write(f.read())
 
     async def post(self):
         s = self.request.body.decode(encoding="utf-8")
@@ -44,7 +80,6 @@ class InitiateRaceHandler(RequestHandler):
                 }))
 
         if data["type"] == "task_info":
-            self.race_id = json.loads(self.request.headers.get("Cookie"))["race_id"]
             tid = data["id"]
             ttitle = data["title"]
             tdescription = data["description"]
@@ -53,16 +88,34 @@ class InitiateRaceHandler(RequestHandler):
             success = await update_task(tid, ttitle, tdescription, tcredits)
             status = "updated" if success else "database error"
             self.write(json.dumps({
-                "type"        : "task_info",
-                "id"          : tid,
-                "status"      : status
+                "type"        : "log",
+                "text"        : "tid: "+ tid + ", " + status
+                }))
+
+        if data["type"] == "delete_task":
+            tid = data["id"]
+            # Visit database: create/update the task entry and return the task link.
+            success = await delete_task(tid)
+            status = "deleted" if success else "database error"
+            self.write(json.dumps({
+                "type"        : "log",
+                "text"        : "tid: "+ tid + ", " + status
                 }))
 
         if data["type"] == "initiate_race":
-            self.race_id = json.loads(self.request.headers.get("Cookie"))["race_id"]
+            cookie = json.loads(self.request.headers.get("Cookie"))
+            race_id = cookie["race_id"]
+            session_id = cookie["session_id"]
+            r = redis.Redis(charset="utf-8", decode_responses=True)
+            username = r.get(session_id + ":username")
+            r.quit()
+            rtitle = data["title"]
+            rintroduction = data["introduction"]
+            rduration = data["duration"]
+            _ = await add_race(race_id, rtitle, rintroduction, rduration, username)
             self.write(json.dumps({
                 "type": "redirect",
                 "protocol": "http",
-                "url": "/race/" + self.race_id
+                "url": "/race/" + race_id
                 }))
 

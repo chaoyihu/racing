@@ -13,6 +13,7 @@ async def register_session(username):
     sid = str(uuid.uuid1())
     r = redis.Redis(charset="utf-8", decode_responses=True)
     r.set(sid + ":username", username)
+    r.quit()
     return sid
 
 class LoginHandler(RequestHandler):
@@ -67,10 +68,6 @@ class LoginHandler(RequestHandler):
         if credential["type"] == "session_id":
             username = r.get(credential["session_id"] + ":username")
             if not username:
-                self.write(json.dumps({
-                    "type": "log", 
-                    "text": "invalid session id. log in required."
-                    }))
                 return False, "Invalid session id. Need to log in."
         # assign/renew session id.
         session_id = await register_session(username)
