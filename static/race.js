@@ -1,27 +1,40 @@
-console.log("Getting race info.")
-let data = `{
-    "type"    : "get_race_info"
-}`;
-var url = window.location.href;
-var protocol = "http";
-var header_params = new Map();
-header_params.set("Content-Type", "application/json");
-my_xhr_post(data, url, protocol, header_params);
-
-
-console.log("Establishing websocket connection.");
-var ws = new WebSocket("ws://"+ window.location.host +"/pubsub");
-ws.addEventListener("message", (event) => { 
-  console.log("server message:", event.data); 
-  handle_server_message(event.data);
-});
+// in case of a shared inviting link
+if (get_cookie("session_id") == "") {
+  my_redirect("/login", "http");
+} else {
+  sp = window.location.pathname.split("/");
+  race_id = sp[sp.length - 1];
+  set_cookie("race_id", race_id, 10);
+  
+  // Load race info
+  console.log("Getting race info.")
+  let data = `{
+      "type"    : "get_race_info"
+  }`;
+  var url = window.location.href;
+  var protocol = "http";
+  var header_params = new Map();
+  header_params.set("Content-Type", "application/json");
+  my_xhr_post(data, url, protocol, header_params);
+  
+  // Start websocket connection
+  console.log("Establishing websocket connection.");
+  var ws = new WebSocket("ws://"+ window.location.host +"/pubsub");
+  ws.addEventListener("message", (event) => { 
+    handle_server_message(event.data);
+  });
+}
 
 function join_race() {
   // send info to server
+
   // change page
   // 1. change button zone
-  document.getElementById("btn-zone").innerHTML = `<section id="timer" style="padding: 20px; text-align: center; height: 120px;"><button class="btn btn-primary rounded" onclick="start_timer();">Start Timer</button></section>`
+  document.getElementById("btn-zone").innerHTML = `<section id="timer" style="padding: 20px; background-color: #f8f9fa; font-color: white; font-size: 40px; text-align: center; height: 120px;"><button class="btn btn-primary rounded" onclick="start_timer();">Start Timer</button></section>`
   // 2. append racer row
+  var data = `{ "type": "join_race" }`
+  ws.send(data);
+  // add_racer_row(name) will be called by handle_server_message in static/common.js
 }
 
 function copy_invitation() {
@@ -55,6 +68,21 @@ function add_task_row(value) {
   tbody.appendChild(row);
 };
 
+function add_racer_row(name) {
+  // new racer
+  var template = document.querySelector('#racer-row');
+  var row = template.content.cloneNode(true);
+  var sum_of_credits = 0;
+  document.race_info["tasks"].forEach(function (value) {sum_of_credits += value[3];}); // 1. show tasks
+  // define row content
+  var td = row.querySelectorAll("td");
+  td[0].innerHTML = name;
+  td[1].innerHTML = `<p>0/${sum_of_credits}, 00:00:00</p>`;
+  var tbody = document.querySelector("#racers-tbody");
+  tbody.appendChild(row);
+};
+
+
 function start_timer() {
   // Set the time we're counting down to
   var endTime = Date.now() + document.race_info["duration"] * 60 * 1000;
@@ -78,13 +106,41 @@ function start_timer() {
 };
 
 function finish_task(tid) {
+  console.log(tid);
   var finish_time = Date.now();
-  var session_id = document.cookie["session_id"];
-  data = `
+  console.log(finish_time);
+  var session_id = get_cookie("session_id");
+  console.log(session_id);
+  data = `{
     "type"      : "finish_task",
     "timestamp" : ${finish_time},
     "session_id": "${session_id}",
     "task_id"   : "${tid}"
-  `;
+  }`;
+  console.log(data);
   ws.send(data);
 };
+
+function send_chat_message() {
+  timestamp = new Date().toUTCString();
+  text = document.getElementById("chat-input").value;
+  document.getElementById("chat-input").value = "";
+  data = `{
+        "type"       : "chat_message",
+        "timestamp"  : "${timestamp}",
+        "message"    : "${text}"
+  }`
+  ws.send(data);
+};
+
+function add_chat_message(publisher, message, timestamp) {
+  document.getElementById("chat-pane").innerHTML += `
+    <div class="chat-message" style="padding:2px;">
+      <div style="background-color:#f8f9fa;">
+        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small><br><strong>${publisher}</strong></div>
+        <div name="message" style="padding:5px;">${message}</div>
+      </div>
+    </div>`;
+  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
+};
+

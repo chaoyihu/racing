@@ -22,7 +22,7 @@ function confirm_edit(tid) {
   console.log(tid);
   if (tid == "new_tid") {
     counter += 1;
-    race_id = JSON.parse(document.cookie)["race_id"]
+    race_id = get_cookie("race_id");
     var tid = race_id + '+task+' + counter;
     console.log(`Editing new task, tid: ${tid}`);
     var existing = false;
@@ -109,7 +109,7 @@ function delete_task(tid) {
   console.log(`Deleting task, tid: ${tid}`);
   let data = `{
       "type"       : "delete_task", 
-      "id"         : "${tid}",
+      "id"         : "${tid}"
   }`;
   var url = window.location.host + window.location.pathname;
   var protocol = "http";
@@ -119,7 +119,7 @@ function delete_task(tid) {
 };
 
 function initiate() {
-  // rid is in cookie["race_id"]
+  // rid is in get_cookie("race_id")
   rtitle = document.getElementById("race-title-box-id").value;
   rintroduction = document.getElementById("race-introduction-box-id").value;
   rduration = document.getElementById("race-duration-box-id").value;

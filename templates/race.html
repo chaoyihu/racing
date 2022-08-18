@@ -49,7 +49,7 @@
         </table>
       </div>
       
-      <div id="racer-pane" style="height: 50%; display: flex; overflow: auto; padding: 10px; border-style: ridge none none none;">
+      <div id="racer-pane" style="height: 50%; overflow-y: scroll; padding: 10px; border-style: ridge none none none;">
         <table id="racers-table" class="table" style="width:100%">
           <thead style="background-color:#f8f9fa;">
             <tr>
@@ -57,7 +57,7 @@
               <td style="width: 50%">Standing</td>
             </tr>
           </thead>
-          <tbody id="racer-tbody">
+          <tbody id="racers-tbody">
             <!-- data should be included here -->
           </tbody>
           <template id="racer-row">
@@ -72,12 +72,11 @@
     </div>
 
     <div id="right-pane" style="float: left; width: 30%; height: 100vh; border-style: none none none ridge;">
-      <div id="chat-pane" style="height: 90%; display: flex; overflow: auto; padding: 20px;">
-          Chat
+      <div id="chat-pane" style="height: 90%; overflow:auto; padding: 20px;">
       </div>
       <div style="height: 10%; padding: 10px">
         <input id="chat-input" class="form-control" style="width: calc(100% - 100px); display: inline;" type="text">
-        <button id="send-btn" class="btn btn-secondary" style="display: inline; width: 80px;" onclick="send_chat_message();">Send</button>
+        <button id="send-btn" class="btn btn-info" style="display: inline; width: 80px;" onclick="send_chat_message();">Send</button>
       </div>
     </div>
 

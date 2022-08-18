@@ -2,6 +2,7 @@ import os
 import json
 import redis
 from tornado.web import RequestHandler
+from utils.mycookie import get_cookie
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -15,8 +16,8 @@ class RaceHandler(RequestHandler):
 
     async def post(self, slug):
         self.race_id = slug
-        cookie = json.loads(self.request.headers.get("Cookie"))
-        race_id = cookie["race_id"]
+        cookie = self.request.headers.get("Cookie")
+        race_id = get_cookie(cookie, "race_id")
         s = self.request.body.decode(encoding="utf-8")
         data = json.loads(s)
         if data["type"] == "get_race_info": 

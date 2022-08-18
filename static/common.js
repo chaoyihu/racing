@@ -1,6 +1,12 @@
 function handle_server_message(txt) {
     console.log(txt);
-    const obj = JSON.parse(txt);
+    var obj = JSON.parse(txt);
+    if (typeof(obj) == "string") {
+      obj = JSON.parse(obj);
+    };
+    console.log(typeof(obj));
+    console.log(obj);
+    console.log(obj["type"]);
     if (obj["type"] == "log") {
         console.log(obj["text"]);
     };
@@ -19,12 +25,16 @@ function handle_server_message(txt) {
         delete obj["type"];
         delete obj["url"];
         delete obj["protocol"];
-        add_cookie(obj);
+        Object.keys(obj).forEach(function(key) {
+          set_cookie(key, obj[key], 10);
+        })
     };
     
     if (obj["type"] == "cookie") {
         delete obj["type"];
-        add_cookie(obj);
+        Object.keys(obj).forEach(function(key) {
+          set_cookie(key, obj[key], 10);
+        })
     }
 
     if (obj["type"] == "user_data") {
@@ -43,22 +53,41 @@ function handle_server_message(txt) {
         <p>Duration: ${obj["duration"]} min(s)</p>
         <p>${obj["introduction"]}</p>
       `;
-      // rtasks = obj["tasks"]; // Array<tlink, ttitle>
+      // rtasks = obj["tasks"];
+    };
+
+    if (obj["type"] == "new_racer") {
+      name = obj["name"];
+      add_racer_row(name);
+    };
+    
+    if (obj["type"] == "chat_message") {
+      add_chat_message(obj["publisher"], obj["message"], obj["timestamp"]);
     };
 };
 
-function add_cookie(obj) {
-  if (document.cookie !== "") {
-    var cookie = JSON.parse(document.cookie);
-  } else {
-    var cookie = {};
+function set_cookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  let expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function get_cookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
   }
-  Object.keys(obj).forEach(function(key) {
-    cookie[key] = obj[key];
-  })
-  document.cookie = JSON.stringify(cookie);
-  console.log(document.cookie);
-};
+  return "";
+}
+
 
 function my_redirect(url, protocol) {
     console.log(url + protocol);

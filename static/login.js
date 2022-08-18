@@ -1,7 +1,6 @@
-if (document.cookie !== null && document.cookie !== "") {
+if (get_cookie("session_id") !== "") {
     console.log("Sending session id to server:");
-    console.log(document.cookie);
-    session_id = JSON.parse(document.cookie)["session_id"];
+    session_id = get_cookie("session_id");
     let data = `{
         "type"      : "session_id", 
         "session_id": "${session_id}"
