@@ -43,48 +43,26 @@ function copy_invitation() {
 };
 
 function start_race() {
-  // notify server
-  // change page:
-  document.race_info["tasks"].forEach(add_task_row); // 1. show tasks
+  document.race_info["start_time"] = new Date();
+  var timestamp = document.race_info["start_time"].toUTCString();
+  // show start message
+  document.getElementById("chat-pane").innerHTML += `
+    <div class="chat-message" style="padding:2px;">
+      <div style="background-color:#17a2b8;">
+        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small></div>
+        <div name="message" style="padding:5px;">Race now starts!</div>
+      </div>
+    </div>`;
+  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
+  document.race_info["tasks"].forEach(add_task_row); // show tasks
   document.getElementById("btn-zone").innerHTML = `<div id="timer" style="text-align: center; padding: 10px; font-size: large"></div>`
-  start_timer(); // 2. start timer
-};
-
-function add_task_row(value) {
-  var tid = value[0];
-  var tlink = value[1];
-  var ttitle = value[2];
-  var tcredits = value[3];
-  // new task
-  var template = document.querySelector('#task-row');
-  var row = template.content.cloneNode(true);
-  // define row content
-  var td = row.querySelectorAll("td");
-  td[0].innerHTML = '<a href="'+ tlink +'">'+ ttitle +'</a>';
-  td[1].textContent = tcredits;
-  td[2].innerHTML = `<button onclick="finish_task('${tid}');">Finish</button>`
-  var tbody = document.querySelector("#tasks-tbody");
-  tbody.appendChild(row);
-};
-
-function add_racer_row(name) {
-  // new racer
-  var template = document.querySelector('#racer-row');
-  var row = template.content.cloneNode(true);
-  var sum_of_credits = 0;
-  document.race_info["tasks"].forEach(function (value) {sum_of_credits += parseInt(value[3]);}); // 1. show tasks
-  // define row content
-  var td = row.querySelectorAll("td");
-  td[0].innerHTML = name;
-  td[1].innerHTML = `<p>0/${sum_of_credits}, 00:00:00</p>`;
-  var tbody = document.querySelector("#racers-tbody");
-  tbody.appendChild(row);
+  start_timer(); // start timer
 };
 
 
 function start_timer() {
   // Set the time we're counting down to
-  var endTime = Date.now() + document.race_info["duration"] * 60 * 1000;
+  var endTime = document.race_info["start_time"].getTime() + document.race_info["duration"] * 60 * 1000;
   // Update the count down every 1 second
   var x = setInterval(function() {
     var now = Date.now();
@@ -104,62 +82,6 @@ function start_timer() {
   }, 1000);
 };
 
-function ready() {
-  timestamp = new Date().toUTCString();
-  data = `{
-    "type" : "ready",
-    "timestamp"  : "${timestamp}"
-  }`;
-  ws.send(data);
-};
-
-function add_ready_message(username, timestamp) {
-  document.getElementById("chat-pane").innerHTML += `
-    <div class="chat-message" style="padding:2px;">
-      <div style="background-color:#17a2b8;">
-        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small></div>
-        <div name="message" style="padding:5px;"><strong>${username}</strong> is ready!</div>
-      </div>
-    </div>`;
-  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
-};
-
-function add_task_message(username, timestamp, ttitle) {
-  document.getElementById("chat-pane").innerHTML += `
-    <div class="chat-message" style="padding:2px;">
-      <div style="background-color:#17a2b8;">
-        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small></div>
-        <div name="message" style="padding:5px;"><strong>${username}</strong> solved ${ttitle}!</div>
-      </div>
-    </div>`;
-  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
-};
-
-function add_chat_message(username, message, timestamp) {
-  document.getElementById("chat-pane").innerHTML += `
-    <div class="chat-message" style="padding:2px;">
-      <div style="background-color:#f8f9fa;">
-        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small><br><strong>${username}</strong></div>
-        <div name="message" style="padding:5px;">${message}</div>
-      </div>
-    </div>`;
-  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
-};
-
-function finish_task(tid) {
-  console.log(tid);
-  var finish_time = Date.now();
-  console.log(finish_time);
-  var session_id = get_cookie("session_id");
-  console.log(session_id);
-  data = `{
-    "type"      : "finish_task",
-    "timestamp" : ${finish_time},
-    "task_id"   : "${tid}"
-  }`;
-  console.log(data);
-  ws.send(data);
-};
 
 function send_chat_message() {
   timestamp = new Date().toUTCString();
@@ -173,4 +95,119 @@ function send_chat_message() {
   ws.send(data);
 };
 
+
+function ready() {
+  timestamp = new Date().toUTCString();
+  data = `{
+    "type" : "ready",
+    "timestamp"  : "${timestamp}"
+  }`;
+  ws.send(data);
+};
+
+
+function add_task_row(value) {
+  var tid = value[0];
+  var tlink = value[1];
+  var ttitle = value[2];
+  var tcredits = value[3];
+  // new task
+  var template = document.querySelector('#task-row');
+  var row = template.content.cloneNode(true);
+  row.querySelector("tr").id = `task_row_${tid.split('+').slice(-1)}`;
+  // define row content
+  var td = row.querySelectorAll("td");
+  td[0].innerHTML = '<a href="'+ tlink +'" target="_blank">'+ ttitle +'</a>';
+  td[1].textContent = tcredits;
+  td[2].innerHTML = `<button onclick="finish_task('${tid}');">Finish</button>`
+  var tbody = document.querySelector("#tasks-tbody");
+  tbody.appendChild(row);
+};
+
+function add_racer_row(username) {
+  document.race_info[username + ":credits"] = 0;
+  // new racer
+  var template = document.querySelector('#racer-row');
+  var row = template.content.cloneNode(true);
+  row.querySelector("tr").id = `racer_row_${username}`;
+  var sum_of_credits = document.race_info["sum_of_credits"];
+  // define row content
+  var td = row.querySelectorAll("td");
+  td[0].innerHTML = username;
+  td[1].innerHTML = `<p>0/${sum_of_credits}, 00:00:00</p>`;
+  var tbody = document.querySelector("#racers-tbody");
+  tbody.appendChild(row);
+};
+
+
+function add_ready_message(username, timestamp) {
+  document.getElementById("chat-pane").innerHTML += `
+    <div class="chat-message" style="padding:2px;">
+      <div style="background-color:#17a2b8;">
+        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small></div>
+        <div name="message" style="padding:5px;"><strong>${username}</strong> is ready!</div>
+      </div>
+    </div>`;
+  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
+};
+
+
+
+function add_task_message(username, timestamp, ttitle) {
+  var tcredits = 0;
+  document.race_info["tasks"].forEach(function (value) {
+        if (value[2] == ttitle) {
+          tcredits = value[3];
+        }
+      })
+  var c = parseInt(document.race_info[username + ":credits"]);
+  c += parseInt(tcredits);
+  document.race_info[username + ":credits"] = c;
+  document.getElementById("chat-pane").innerHTML += `
+    <div class="chat-message" style="padding:2px;">
+      <div style="background-color:#17a2b8;">
+        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small></div>
+        <div name="message" style="padding:5px;"><strong>${username}</strong> solved ${ttitle}!</div>
+      </div>
+    </div>`;
+  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
+};
+
+
+function add_chat_message(username, message, timestamp) {
+  document.getElementById("chat-pane").innerHTML += `
+    <div class="chat-message" style="padding:2px;">
+      <div style="background-color:#f8f9fa;">
+        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small><br><strong>${username}</strong></div>
+        <div name="message" style="padding:5px;">${message}</div>
+      </div>
+    </div>`;
+  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
+};
+
+function finish_task(tid) {
+  var session_id = get_cookie("session_id");
+  console.log("finish task:" + tid);
+  var t = Date.now() - document.race_info["start_time"];
+  var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((t % (1000 * 60)) / 1000);
+  var finish_time = hours + ":" + minutes + ":" + seconds;
+  console.log("finish time: " + finish_time);
+  data = `{
+    "type"      : "finish_task",
+    "timestamp" : "${finish_time}",
+    "task_id"   : "${tid}"
+  }`;
+  console.log(data);
+  ws.send(data);
+};
+
+function refresh_racer_row(username, timestamp, tcredits) {
+  var current_credits = document.race_info[username + ":credits"];
+  var sum_of_credits = document.race_info["sum_of_credits"];
+  row = document.getElementById(`racer_row_${username}`);
+  var td = row.querySelectorAll("td");
+  td[1].innerHTML = `<p>${current_credits}/${sum_of_credits}, ${timestamp}</p>`;
+};
 

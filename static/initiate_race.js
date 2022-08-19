@@ -74,7 +74,7 @@ function insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing) {
     // new task
     var template = document.querySelector('#task_row');
     var row = template.content.cloneNode(true);
-    row.querySelector("tr").id = `task_row_${tid.split('+').slice(-1)}`
+    row.querySelector("tr").id = `task_row_${tid.split('+').slice(-1)}`;
     var tbody = document.querySelector("tbody");
     tbody.appendChild(row);
   }

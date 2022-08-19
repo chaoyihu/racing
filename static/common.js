@@ -47,6 +47,9 @@ function handle_server_message(txt) {
 
     if (obj["type"] == "race_info") {
       document.race_info = obj;
+      var sum_of_credits = 0;
+      document.race_info["tasks"].forEach(function (value) {sum_of_credits += parseInt(value[3]);}); // 1. show tasks
+      document.race_info["sum_of_credits"] = sum_of_credits;
       document.getElementById("info-zone").innerHTML = `
         <h1>${obj["title"]}</h1>
         <p>Initiated by: ${obj["initiator"]}</p>
@@ -74,8 +77,11 @@ function handle_server_message(txt) {
     };
 
     if (obj["type"] == "finish_task") {
+      var username = obj["publisher"];
       var tid = obj["task_id"];
+      var timestamp = obj["timestamp"];
       var ttitle = "";
+      var tcredits = 0;
       document.race_info["tasks"].forEach(function (value) {
         if (value[0] == tid) {
           ttitle = value[2];
@@ -83,9 +89,10 @@ function handle_server_message(txt) {
         }
       })
       // add task message
-      add_task_message(obj["publisher"], obj["timestamp"], ttitle);
+      add_task_message(username, timestamp, ttitle);
       // add credit to racer row and refresh standing board.
-      //
+      refresh_racer_row(username, timestamp, tcredits);
+      refresh_leaderboard();
     };
 };
 
