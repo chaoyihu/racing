@@ -5,7 +5,7 @@ import threading
 import asyncio
 from tornado.websocket import WebSocketHandler
 from utils.mycookie import get_cookie
-from utils.myredis import publish
+from utils.myredis import *
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -26,15 +26,36 @@ class PubsubHandler(WebSocketHandler):
         data = json.loads(message)
         if data["type"] == "join_race":
             username = self.r.get(self.session_id + ":username")
-            self.write_message(json.dumps({
-                "type": "new_racer",
-                "name": username,
-                }))
+            data = {
+                    "type": "new_racer",
+                    "name": username
+                }
+            success = await publish("ch+" + self.race_id, json.dumps(data))
+            success = await incr_racer_count(self.race_id)
+
         if data["type"] == "chat_message":
             username = self.r.get(self.session_id + ":username")
             data["publisher"] = username
             success = await publish("ch+" + self.race_id, json.dumps(data))
 
+        if data["type"] == "ready":
+            username = self.r.get(self.session_id + ":username")
+            data["publisher"] = username
+            success = await publish("ch+" + self.race_id, json.dumps(data))
+            num_of_ready = await incr_ready_count(self.race_id)
+            num_of_racer = await get_racer_count(self.race_id)
+            if num_of_ready == num_of_racer:
+                data = {
+                        "type": "start_race"
+                    }
+                success = await publish("ch+" + self.race_id, json.dumps(data))
+
+        if data["type"] == "finish_task":
+            username = self.r.get(self.session_id + ":username")
+            data["publisher"] = username
+            success = await publish("ch+" + self.race_id, json.dumps(data))
+
+            
     async def on_close(self):
         self.listen_thread.join()
 

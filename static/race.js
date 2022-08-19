@@ -27,14 +27,13 @@ if (get_cookie("session_id") == "") {
 
 function join_race() {
   // send info to server
-
-  // change page
-  // 1. change button zone
-  document.getElementById("btn-zone").innerHTML = `<section id="timer" style="padding: 20px; background-color: #f8f9fa; font-color: white; font-size: 40px; text-align: center; height: 120px;"><button class="btn btn-primary rounded" onclick="start_timer();">Start Timer</button></section>`
-  // 2. append racer row
   var data = `{ "type": "join_race" }`
   ws.send(data);
-  // add_racer_row(name) will be called by handle_server_message in static/common.js
+  // change page
+  // 1. change button zone html
+  document.getElementById("btn-zone").innerHTML = `<section id="timer" style="padding: 20px; background-color: #f8f9fa; font-color: white; font-size: 40px; text-align: center; height: 120px;"><button class="btn btn-primary rounded" onclick="ready();">Ready</button></section>`
+  // 2. append racer row
+  // add_racer_row(name) will be called when the reply from server gets handled by handle_server_message in static/common.js
 }
 
 function copy_invitation() {
@@ -73,7 +72,7 @@ function add_racer_row(name) {
   var template = document.querySelector('#racer-row');
   var row = template.content.cloneNode(true);
   var sum_of_credits = 0;
-  document.race_info["tasks"].forEach(function (value) {sum_of_credits += value[3];}); // 1. show tasks
+  document.race_info["tasks"].forEach(function (value) {sum_of_credits += parseInt(value[3]);}); // 1. show tasks
   // define row content
   var td = row.querySelectorAll("td");
   td[0].innerHTML = name;
@@ -105,6 +104,48 @@ function start_timer() {
   }, 1000);
 };
 
+function ready() {
+  timestamp = new Date().toUTCString();
+  data = `{
+    "type" : "ready",
+    "timestamp"  : "${timestamp}"
+  }`;
+  ws.send(data);
+};
+
+function add_ready_message(username, timestamp) {
+  document.getElementById("chat-pane").innerHTML += `
+    <div class="chat-message" style="padding:2px;">
+      <div style="background-color:#17a2b8;">
+        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small></div>
+        <div name="message" style="padding:5px;"><strong>${username}</strong> is ready!</div>
+      </div>
+    </div>`;
+  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
+};
+
+function add_task_message(username, timestamp, ttitle) {
+  document.getElementById("chat-pane").innerHTML += `
+    <div class="chat-message" style="padding:2px;">
+      <div style="background-color:#17a2b8;">
+        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small></div>
+        <div name="message" style="padding:5px;"><strong>${username}</strong> solved ${ttitle}!</div>
+      </div>
+    </div>`;
+  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
+};
+
+function add_chat_message(username, message, timestamp) {
+  document.getElementById("chat-pane").innerHTML += `
+    <div class="chat-message" style="padding:2px;">
+      <div style="background-color:#f8f9fa;">
+        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small><br><strong>${username}</strong></div>
+        <div name="message" style="padding:5px;">${message}</div>
+      </div>
+    </div>`;
+  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
+};
+
 function finish_task(tid) {
   console.log(tid);
   var finish_time = Date.now();
@@ -114,7 +155,6 @@ function finish_task(tid) {
   data = `{
     "type"      : "finish_task",
     "timestamp" : ${finish_time},
-    "session_id": "${session_id}",
     "task_id"   : "${tid}"
   }`;
   console.log(data);
@@ -133,14 +173,4 @@ function send_chat_message() {
   ws.send(data);
 };
 
-function add_chat_message(publisher, message, timestamp) {
-  document.getElementById("chat-pane").innerHTML += `
-    <div class="chat-message" style="padding:2px;">
-      <div style="background-color:#f8f9fa;">
-        <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small><br><strong>${publisher}</strong></div>
-        <div name="message" style="padding:5px;">${message}</div>
-      </div>
-    </div>`;
-  document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
-};
 

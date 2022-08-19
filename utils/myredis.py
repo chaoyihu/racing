@@ -50,3 +50,29 @@ async def publish(channel, data):
         r.quit()
         return False
 
+async def incr_racer_count(race_id):
+    r = redis.Redis(charset="utf-8", decode_responses=True)
+    res = r.incr(race_id + ":NUM_OF_RACER") 
+    r.quit()
+    return res
+
+async def incr_ready_count(race_id):
+    r = redis.Redis(charset="utf-8", decode_responses=True)
+    res = r.incr(race_id + ":NUM_OF_READY") 
+    r.quit()
+    return res
+
+
+async def get_racer_count(race_id):
+    r = redis.Redis(charset="utf-8", decode_responses=True)
+    res = r.get(race_id + ":NUM_OF_RACER") 
+    r.quit()
+    return int(res)
+
+async def get_ready_count(race_id):
+    r = redis.Redis(charset="utf-8", decode_responses=True)
+    res = r.get(race_id + ":NUM_OF_READY") 
+    r.quit()
+    return int(res)
+
+

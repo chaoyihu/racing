@@ -64,6 +64,29 @@ function handle_server_message(txt) {
     if (obj["type"] == "chat_message") {
       add_chat_message(obj["publisher"], obj["message"], obj["timestamp"]);
     };
+
+    if (obj["type"] == "ready") {
+      add_ready_message(obj["publisher"], obj["timestamp"]);
+    };
+
+    if (obj["type"] == "start_race") {
+      start_race();
+    };
+
+    if (obj["type"] == "finish_task") {
+      var tid = obj["task_id"];
+      var ttitle = "";
+      document.race_info["tasks"].forEach(function (value) {
+        if (value[0] == tid) {
+          ttitle = value[2];
+          tcredits = value[3];
+        }
+      })
+      // add task message
+      add_task_message(obj["publisher"], obj["timestamp"], ttitle);
+      // add credit to racer row and refresh standing board.
+      //
+    };
 };
 
 function set_cookie(cname, cvalue, exdays) {
