@@ -21,7 +21,7 @@ class RaceHandler(RequestHandler):
         s = self.request.body.decode(encoding="utf-8")
         data = json.loads(s)
         if data["type"] == "get_race_info": 
-            r = redis.Redis(charset="utf-8", decode_responses=True)
+            r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
             rtitle = r.get(race_id + ":title")
             rintroduction = r.get(race_id + ":introduction")
             rduration = r.get(race_id + ":duration")

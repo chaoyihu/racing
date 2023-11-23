@@ -11,7 +11,7 @@ load_dotenv()
 
 async def register_session(username):
     sid = str(uuid.uuid1())
-    r = redis.Redis(charset="utf-8", decode_responses=True)
+    r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
     r.set(sid + ":username", username)
     r.quit()
     return sid
@@ -56,7 +56,7 @@ class LoginHandler(RequestHandler):
 
 
     async def credential_check(self, credential):
-        r = redis.Redis(charset="utf-8", decode_responses=True)
+        r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
         if credential["type"] == "password":
             username = credential["username"]
             password = credential["password"]

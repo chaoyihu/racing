@@ -14,7 +14,7 @@ load_dotenv()
 class PubsubHandler(WebSocketHandler):
     
     async def open(self):
-        self.r = redis.Redis(charset="utf-8", decode_responses=True)
+        self.r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
         self.race_id = get_cookie(self.request.headers.get("Cookie"), "race_id")
         self.session_id = get_cookie(self.request.headers.get("Cookie"), "session_id")
         self.listen_thread = threading.Thread(target=self.pubsub_listen)
@@ -62,7 +62,7 @@ class PubsubHandler(WebSocketHandler):
     def pubsub_listen(self):
         asyncio.set_event_loop(asyncio.new_event_loop())
         print("Connected.")
-        self.rp = redis.Redis(charset="utf-8", decode_responses=True)
+        self.rp = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
         self.q = self.rp.pubsub()
         print("Subscribing to channel:", "ch+" + self.race_id)
         self.q.subscribe("ch+" + self.race_id)

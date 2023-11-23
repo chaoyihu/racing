@@ -67,7 +67,7 @@ class InitiateRaceHandler(RequestHandler):
         if data["type"] == "initiate_race":
             race_id = get_cookie(self.request.headers.get("Cookie"), "race_id")
             session_id = get_cookie(self.request.headers.get("Cookie"), "session_id")
-            r = redis.Redis(charset="utf-8", decode_responses=True)
+            r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
             username = r.get(session_id + ":username")
             r.quit()
             rtitle = data["title"]

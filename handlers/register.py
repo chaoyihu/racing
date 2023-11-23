@@ -21,7 +21,7 @@ class RegisterHandler(RequestHandler):
         if data["type"] != "register_info":
             print(f"Unknown message type from client: ", data["type"])
             return None
-        r = redis.Redis(charset="utf-8", decode_responses=True)
+        r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
         print("checking if username is available.")
         exists = r.exists(data["username"] + ":password")
         if exists:
