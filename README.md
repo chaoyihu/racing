@@ -31,13 +31,3 @@ services:
 From the dir where you place the compose file, run `docker compose up`.
 #### Step 3: Visit the app
 Visit `localhost:8000`.
-
-
-## Deploy on azure
-#### Step 1:
-Run `docker run -it mcr.microsoft.com/azure-cli`.
-#### Step 2:
-Run `az container create     --resource-group [resource-group]    --name racing-server  --ports 8000   --image registry.hub.docker.com/zoehcycy/racing:azure   --ip-address public`.
-View Azure dashboardand copy the public ip address of racing server.
-#### Step 3:
-Visit `[racing-server-public-ip]:8000` to access the app.
