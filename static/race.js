@@ -31,7 +31,7 @@ function join_race() {
   ws.send(data);
   // change page
   // 1. change button zone html
-  document.getElementById("btn-zone").innerHTML = `<section id="timer" style="padding: 20px; background-color: #f8f9fa; font-color: white; font-size: 40px; text-align: center; height: 120px;"><button class="btn btn-primary rounded" onclick="ready();">Ready</button></section>`
+  document.getElementById("btn-zone").innerHTML = `<section id="timer"><button class="btn btn-primary rounded" onclick="ready();">Ready</button></section>`
   // 2. append racer row
   // add_racer_row(name) will be called when the reply from server gets handled by handle_server_message in static/common.js
 }
@@ -77,7 +77,7 @@ function start_timer() {
     // If the count down is finished, write some text
     if (remain < 0) {
       clearInterval(x);
-      document.getElementById("demo").innerHTML = "EXPIRED";
+      document.getElementById("timer").innerHTML = "Time Up!";
     }
   }, 1000);
 };
@@ -167,7 +167,7 @@ function add_task_message(username, timestamp, ttitle) {
     <div class="chat-message" style="padding:2px;">
       <div style="background-color:#17a2b8;">
         <div name="signature" style="padding:5px; font-color:gray;"><small>${timestamp}</small></div>
-        <div name="message" style="padding:5px;"><strong>${username}</strong> solved ${ttitle}!</div>
+        <div name="message" style="padding:5px;"><strong>${username}</strong> completed ${ttitle}!</div>
       </div>
     </div>`;
   document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom

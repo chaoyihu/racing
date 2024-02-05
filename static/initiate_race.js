@@ -83,7 +83,10 @@ function insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing) {
   var td = row.querySelectorAll("td");
   td[0].innerHTML = '<a href="'+ tlink +'">'+ ttitle +'</a>';
   td[1].textContent = tcredits;
-  td[2].innerHTML = `<button onclick="edit_task('${tid}');"> Edit</button><button onclick="delete_task('${tid}');">Delete</button>`
+  td[2].innerHTML = `
+    <button onclick="edit_task('${tid}');"> Edit</button>
+    <button onclick="delete_task('${tid}');">Delete</button>
+    `
   // define row info (for display in edit_task)
   row.info = {
     "tid"         : tid,

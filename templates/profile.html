@@ -13,10 +13,13 @@
 
     <div id="main">
       
-      <div style="float: left; width: 30%; padding: 35px">
-        <section id="user_info">
+      <div id="user-info-pane">
+        <div id="user-profile-pic-container">
+          <img src="../static/imgs/default-profile-pic.jpg">
+        </div>
+        <div id="user-info">
           User info
-        </section>
+        </div>
       </div>
       
       <div style="float: left; width: 70%; padding: 35px">
@@ -35,8 +38,7 @@
             <input id="search_query_box_id" placeholder="Search..">
             <button id="search_btn" onclick="search();">Search</button>
           </div>
-          <div id="feed" style="border: 1px solid black;">
-            <p>Feed here.</p>
+          <div id="feed">
           </div>
         </section>
       </div>

@@ -38,7 +38,7 @@ function handle_server_message(txt) {
     }
 
     if (obj["type"] == "user_data") {
-       document.getElementById("user_info").innerHTML = `
+       document.getElementById("user-info").innerHTML = `
          <p>username: ${obj["username"]}</p>
          <p>history: ${obj["user_history"]}</p>
          <p>level: ${obj["user_level"]}</p>

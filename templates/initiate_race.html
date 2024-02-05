@@ -46,10 +46,10 @@
           <h3 for="task-list"><b>Task List</b></h3><br>
         </div>
         <div style="padding: 10px">
-          <button id="add_task_btn" class="btn btn-info" onclick='add_task("new_tid")';> Add Task</button>
+          <button id="add_task_btn" class="btn btn-action" onclick='add_task("new_tid")';> Add Task</button>
         </div>
         <div style="padding:10px">
-          <table id="task-table" class="table" style="width:80%; padding:10px;">
+          <table id="task-table" class="table table-striped" style="width:80%; padding:10px;">
             <thead>
               <tr>
                 <td style="width:60%">Task</td>
@@ -64,13 +64,13 @@
           <template id="task_row">
             <tr id="task_row_n">
               <td class="record"></td>
-              <td></td><td>
-              </td><td></td><td>
-            </td></tr>
+              <td class="record"></td>
+              <td class="record"></td>
+            </tr>
           </template>
         </div>
         <div style="padding:10px">
-          <button id="initiate-btn" class="btn btn-primary" onclick="initiate();">Initiate</button>
+          <button id="initiate-btn" class="btn btn-action" onclick="initiate();">Initiate</button>
         </div>
       </div>
   

@@ -1,5 +1,4 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css?family=Russo+One");
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -22,7 +21,7 @@
   --danger: #FD5D93;
   --light: #f8f9fa;
   --dark: #343a40;
-  --font-family: "Russo One", sans-serif;
+  --font-family: sans-serif;
 }
 
 #index-page-body {
@@ -32,6 +31,9 @@
 }
 
 .banner-box {
+  color: white;
+  font-size: 100px;
+  margin-top: 300px;
   text-align: center;
 }
 
@@ -47,6 +49,34 @@
   background-color: rgba(0,0,0,0.8);
   z-index: 2;
   cursor: pointer;
+}
+
+#timer {
+  padding: 20px; 
+  background-color:#007bff; 
+  color: white; 
+  font-size: 100px;
+  text-align: center;
+  height: 120px;
+}
+
+#user-info-pane {
+  float: left;
+  width: 30%;
+  height: 100vh;
+  padding-top: 100px;
+  padding-left: 40px;
+  background-color:lightgray;
+}
+
+#user-profile-pic-container {
+  margin-bottom: 40px;
+}
+
+#user-info-pane img {
+  border-radius: 50%;
+  width:200px;
+  height:200px;
 }
 
 *,
@@ -68,7 +98,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: "Russo One", sans-serif;
+  font-family: sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -408,76 +438,31 @@ a > code {
   color: inherit;
 }
 
-.table {
-  width: 100%;
-  margin-bottom: 1rem;
-  color: #212529;
+
+
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
 }
 
-.table th,
-.table td {
-  padding: 0.75rem;
-  vertical-align: top;
-  border-top: 1px solid #dee2e6;
+p {
+  font-size: calc(13px + (15 - 13) * ((100vw - 300px) / (1300 - 300)));
+  opacity: .9;
+  color: #111;
+  letter-spacing: .6px;
 }
 
-.table thead th {
-  vertical-align: bottom;
-  border-bottom: 2px solid #dee2e6;
+.xs-font {
+  font-size: 13px;
+  opacity: .5;
 }
 
-.table tbody + tbody {
-  border-top: 2px solid #dee2e6;
+.title {
+  font-size: calc(15px + (20 - 15) * ((100vw - 300px) / (1300 - 300)));
 }
 
-.table-sm th,
-.table-sm td {
-  padding: 0.3rem;
-}
 
-.table-bordered {
-  border: 1px solid #dee2e6;
-}
-
-.table-bordered th,
-.table-bordered td {
-  border: 1px solid #dee2e6;
-}
-
-.table-bordered thead th,
-.table-bordered thead td {
-  border-bottom-width: 2px;
-}
-
-.table-borderless th,
-.table-borderless td,
-.table-borderless thead th,
-.table-borderless tbody + tbody {
-  border: 0;
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.table-hover tbody tr:hover {
-  color: #212529;
-  background-color: rgba(0, 0, 0, 0.075);
-}
-
-.table-primary,
-.table-primary > th,
-.table-primary > td {
-  background-color: #fbd3d3;
-}
-
-.table-primary th,
-.table-primary td,
-.table-primary thead th,
-.table-primary tbody + tbody {
-  border-color: #f7adad;
-}
-
+/* Buttons */
 .btn {
   display: inline-block;
   font-weight: 400;
@@ -499,36 +484,54 @@ a > code {
 }
 
 .btn:hover {
-  color: #212529;
-  text-decoration: none;
+  border:#111 2px;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #f06161;
-  border-color: #f06161;
-}
-h1, h2, h3, h4, h5, h6 {
-  font-weight: bold;
+  color: black;
+  background-color:cornflowerblue;
 }
 
-p {
-  font-size: calc(13px + (15 - 13) * ((100vw - 300px) / (1300 - 300)));
-  opacity: .9;
-  color: #111;
-  letter-spacing: .6px;
+.btn-action {
+  color:black;
+  background-color:#ffc107;
 }
 
-.xs-font {
-  font-size: 13px;
-  opacity: .5;
-}
-
-.title {
-  font-size: calc(15px + (20 - 15) * ((100vw - 300px) / (1300 - 300)));
+.btn-info {
+  color:black;
+  background-color:cyan;
 }
 
 .btn-rounded {
   border-radius: 100px;
 }
 
+
+/* Tables */
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+}
+
+.table-striped {
+  width: 100%;
+  border: black 1px;
+}
+
+.table-striped th,
+.table-striped td {
+  padding: 10px;
+}
+
+.table-striped th {
+  background-color:rgb(103, 138, 202); /* Set background color for header */
+}
+
+.table-striped tr:nth-child(even) {
+  background-color:rgb(173, 186, 230); /* Set background color for even rows */
+}
+
+.table-striped tr:nth-child(odd) {
+  background-color:rgb(230, 231, 236); /* Set background color for odd rows */
+}
