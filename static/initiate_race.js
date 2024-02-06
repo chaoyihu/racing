@@ -1,7 +1,7 @@
 // Create new race
-let data = `{
-    "type"    : "request_race"
-}`;
+let data = JSON.stringify({
+    type    : "request_race"
+});
 var url = window.location.href;
 var protocol = "http";
 var header_params = new Map();
@@ -40,13 +40,13 @@ function confirm_edit(tid) {
 
   // back-end: create/update task info in database.
   console.log(`Sending task info to server, tid: ${tid}`);
-  let data = `{
-      "type"       : "task_info", 
-      "id"         : "${tid}",
-      "title"      : "${ttitle}", 
-      "description": "${tdescription}",
-      "credits"    : "${tcredits}"
-  }`;
+  let data = JSON.stringify({
+      type       : "task_info", 
+      id         : tid,
+      title      : ttitle, 
+      description: tdescription,
+      credits    : tcredits
+  });
   var url = window.location.host + window.location.pathname;
   var protocol = "http";
   var header_params = new Map();
@@ -84,8 +84,8 @@ function insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing) {
   td[0].innerHTML = '<a href="'+ tlink +'">'+ ttitle +'</a>';
   td[1].textContent = tcredits;
   td[2].innerHTML = `
-    <button onclick="edit_task('${tid}');"> Edit</button>
-    <button onclick="delete_task('${tid}');">Delete</button>
+    <button class="btn btn-secondary" onclick="edit_task('${tid}');"> Edit</button>
+    <button class="btn btn-secondary" onclick="delete_task('${tid}');">Delete</button>
     `
   // define row info (for display in edit_task)
   row.info = {
@@ -110,10 +110,10 @@ function edit_task(tid) {
 function delete_task(tid) {
   document.getElementById(`task_row_${tid.split('+').slice(-1)}`).remove();
   console.log(`Deleting task, tid: ${tid}`);
-  let data = `{
-      "type"       : "delete_task", 
-      "id"         : "${tid}"
-  }`;
+  let data = JSON.stringify({
+      type       : "delete_task", 
+      id         : tid
+  });
   var url = window.location.host + window.location.pathname;
   var protocol = "http";
   var header_params = new Map();
@@ -125,14 +125,15 @@ function initiate() {
   // rid is in get_cookie("race_id")
   rtitle = document.getElementById("race-title-box-id").value;
   rintroduction = document.getElementById("race-introduction-box-id").value;
+  console.log(rintroduction);
   rduration = document.getElementById("race-duration-box-id").value;
   //rtasks will be retrieved in database by `keys rid+task*`
-  let data = `{
-      "type"         : "initiate_race",
-      "title"        : "${rtitle}",
-      "introduction" : "${rintroduction}",
-      "duration"    :  ${rduration}
-  }`;
+  let data = JSON.stringify({
+      type         : "initiate_race",
+      title        : rtitle,
+      introduction : rintroduction,
+      duration    :  rduration
+  });
   var url = window.location.href;
   var protocol = "http";
   var header_params = new Map();
@@ -140,4 +141,3 @@ function initiate() {
   my_xhr_post(data, url, protocol, header_params);
   // server will redirect
 };
-

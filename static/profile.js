@@ -1,7 +1,7 @@
 console.log("Getting user data.");
-let data = `{
+let data = JSON.stringify({
     "type"    : "request_user_info"
-}`;
+});
 var url = window.location.href;
 var protocol = "http";
 var header_params = new Map();
@@ -13,11 +13,11 @@ function initiate_race() {
 };
 
 function join_race() {
-   race_id = document.getElementById("race_id_box");
+   var race_id = document.getElementById("race_id_box").value;
    my_redirect("/race/" + race_id, "http");
 };
 
 function search() {
-   query = document.getElementById("search_query_box_id").value;
-   my_redirect("/query/" + query, "http");
+   var query = document.getElementById("search_query_box_id").value;
+   
 };

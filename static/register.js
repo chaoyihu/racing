@@ -6,11 +6,11 @@ function register() {
         alert("Inconsistent entries of password.")
     } else {
         console.log("Sending credential to server.");
-        let data = `{
-            "type"    : "register_info", 
-            "username": "${username}", 
-            "password": "${password}"
-        }`;
+        let data = JSON.stringify({
+            type    : "register_info", 
+            username: username, 
+            password: password
+        });
         var url = window.location.host + "/register";
         var protocol = "http";
         var header_params = new Map();

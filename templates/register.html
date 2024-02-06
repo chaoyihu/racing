@@ -12,16 +12,19 @@
     <script type="text/javascript" src="./static/common.js"></script>
     <script type="text/javascript" src="./static/register.js"></script>
 
-    <div id="main">
+    <div id="register-pane">
       
-      <div style="float: left; width: 50%">
-        <p><input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event);" style="display: none;"></p>
+      <div class="profile-pic-uploader">
+        <!-- <p><input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event);" style="display: none;"></p>
         <p><label for="file" style="cursor: pointer;">Upload</label></p>
-        <p><img id="output" width="200" /></p>
+        <p><img id="output" width="200" /></p> -->
+        <div id="user-profile-pic-container">
+          <img src="../static/imgs/default-profile-pic.jpg">
+        </div>
       </div>
       
-      <div style="float: left; width: 50%">
-        <section id="info_section">
+      <div class="register-info">
+        <section id="register-pane">
           <form>
             <label for="username"><b>Name yourself</b></label><br>
             <input type="text" id="username_box_id" name="username_box"><br>
@@ -30,9 +33,10 @@
             <label for="confirm_password"><b>Confirm password</b></label><br>
             <input type="password" id="confirm_password_box_id" name="confirm_password_box"><br>
           </form>
-          <button id="register_btn" class="btn btn-primary btn-rounded" onclick="register()">Register</button>
+          <button id="register_btn" class="btn btn-primary" onclick="register()">Register</button>
         </section>
       </div>
+
     </div>
 
   </body>

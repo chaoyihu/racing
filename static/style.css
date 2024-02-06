@@ -24,17 +24,164 @@
   --font-family: sans-serif;
 }
 
-#index-page-body {
-  background-image: url('../static/imgs/index_background.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
+/* Index page*/
+.banner-box {
+  margin-top: 200px;
+  text-align: center;
 }
 
-.banner-box {
-  color: white;
+.banner-box a {
+  color: black;
   font-size: 100px;
-  margin-top: 300px;
+  font-weight: bold;
+}
+
+.banner-box :hover {
+  text-shadow: 0 0 20px #007bff;
+}
+
+/* Login page*/
+#login-pane {
+  margin-top: 40px;
+  margin-left: 30%;
+  width: 40%;
+  padding: 10px 10px 10px 10px;
+}
+
+#login-pane p {
+  padding: 5px 5px 5px 5px;
+}
+
+/* Register page*/
+#register-pane {
+  margin-top: 40px;
+  margin-left: 30%;
+  width: 40%;
+  padding: 10px 10px 10px 10px;
+}
+
+#register-pane p {
+  padding: 5px 5px 5px 5px;
+}
+
+#profile-pic-uploader {
   text-align: center;
+}
+
+/* Profile page */
+#user-info-pane {
+  float: left;
+  width: 30%;
+  height: 100vh;
+  padding-top: 100px;
+  padding-left: 40px;
+  background-color:lightgray;
+}
+
+#user-profile-pic-container {
+  align-content: center;
+  margin-bottom: 40px;
+}
+
+#user-profile-pic-container img {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+}
+
+.user-action-pane {
+  margin-left: 30%;
+  padding: 30px 30px 30px 30px;
+  float: left;
+  width: 70%;
+}
+
+
+/* Race page */
+#timer {
+  padding: 20px;
+  font-size: x-large;
+  font-weight: bold;
+  text-align: center;
+}
+
+.pane {
+  padding: 10px 10px 10px 10px;
+}
+
+#left-pane {
+  float: left; width: 30%; height: 100vh;
+}
+
+#mid-pane {
+  float: left; width: 40%; height: 100vh; border-style: none none none ridge;
+}
+
+#task-pane {
+  height: 50%; display: flex; overflow: auto; padding: 20px;
+}
+
+#racer-pane {
+  height: 50%; overflow-y: scroll; padding: 10px; border-style: ridge none none none;
+}
+
+#right-pane {
+  float: left; width: 30%; height: 100vh; border-style: none none none ridge;
+}
+
+#chat-pane {
+  height: 80%; overflow:auto; padding: 20px;
+}
+
+#input-pane {
+  height: 20%;
+  padding: 10px;
+  vertical-align: middle;
+}
+
+.chat-message-container {
+  padding:2px;
+}
+
+.message-info {
+  background-color:cyan;
+}
+
+.message-user {
+  background-color: lightgrey;
+}
+
+.chat-message-container p{
+  padding: 0px 10px 10px 10px;
+}
+
+#chat-input {
+  float: left;
+  height: 100%; 
+  width: calc(100% - 120px); 
+  display: inline;
+}
+
+#send-btn {
+  float: left;
+  margin-left: 20px;
+  display: inline;
+  width: 80px;
+}
+
+/* Initiate race */
+.race-info-pane {
+  padding: 30px 30px 30px 30px;
+}
+
+.race-info-pane p, h3 {
+  padding: 5px 5px 5px 5px;
+}
+
+#race-introduction-box-id {
+  height: 100px;
+  width: 50%;
+  padding: 10px 10px 10px 10px;
 }
 
 #complete_overlay {
@@ -51,33 +198,6 @@
   cursor: pointer;
 }
 
-#timer {
-  padding: 20px; 
-  background-color:#007bff; 
-  color: white; 
-  font-size: 100px;
-  text-align: center;
-  height: 120px;
-}
-
-#user-info-pane {
-  float: left;
-  width: 30%;
-  height: 100vh;
-  padding-top: 100px;
-  padding-left: 40px;
-  background-color:lightgray;
-}
-
-#user-profile-pic-container {
-  margin-bottom: 40px;
-}
-
-#user-info-pane img {
-  border-radius: 50%;
-  width:200px;
-  height:200px;
-}
 
 *,
 *::before,
@@ -158,14 +278,6 @@ label {
   margin-bottom: 0.5rem;
 }
 
-button {
-  border-radius: 0;
-}
-
-button:focus {
-  outline: 1px dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-}
 
 input,
 button,
@@ -176,6 +288,7 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  word-break: break-all;
 }
 
 button,
@@ -314,34 +427,6 @@ h6, .h6 {
   font-size: 1rem;
 }
 
-.lead {
-  font-size: 1.25rem;
-  font-weight: 300;
-}
-
-.display-1 {
-  font-size: 6rem;
-  font-weight: 300;
-  line-height: 1.2;
-}
-
-.display-2 {
-  font-size: 5.5rem;
-  font-weight: 300;
-  line-height: 1.2;
-}
-
-.display-3 {
-  font-size: 4.5rem;
-  font-weight: 300;
-  line-height: 1.2;
-}
-
-.display-4 {
-  font-size: 3.5rem;
-  font-weight: 300;
-  line-height: 1.2;
-}
 
 hr {
   margin-top: 1rem;
@@ -439,8 +524,6 @@ a > code {
 }
 
 
-
-
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
@@ -474,7 +557,7 @@ p {
       -ms-user-select: none;
           user-select: none;
   background-color: transparent;
-  border: 1px solid transparent;
+  margin: 10px 10px 10px 10px;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
@@ -484,12 +567,17 @@ p {
 }
 
 .btn:hover {
-  border:#111 2px;
+  filter: brightness(150%);
 }
 
 .btn-primary {
   color: black;
-  background-color:cornflowerblue;
+  background-color:#007bff;
+}
+
+.btn-secondary {
+  color: black;
+  background-color:grey;
 }
 
 .btn-action {
@@ -499,11 +587,7 @@ p {
 
 .btn-info {
   color:black;
-  background-color:cyan;
-}
-
-.btn-rounded {
-  border-radius: 100px;
+  background-color:darkcyan;
 }
 
 
@@ -521,17 +605,18 @@ p {
 
 .table-striped th,
 .table-striped td {
-  padding: 10px;
+  padding: 10px 10px 10px 10px;
 }
 
 .table-striped th {
-  background-color:rgb(103, 138, 202); /* Set background color for header */
+  background-color:rgb(152, 181, 235); /* Set background color for header */
+  border-bottom: black 1px;
 }
 
 .table-striped tr:nth-child(even) {
-  background-color:rgb(173, 186, 230); /* Set background color for even rows */
+  background-color:rgb(229, 233, 247); /* Set background color for even rows */
 }
 
 .table-striped tr:nth-child(odd) {
-  background-color:rgb(230, 231, 236); /* Set background color for odd rows */
+  background-color:rgb(220, 220, 221); /* Set background color for odd rows */
 }

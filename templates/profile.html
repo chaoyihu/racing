@@ -22,23 +22,24 @@
         </div>
       </div>
       
-      <div style="float: left; width: 70%; padding: 35px">
+      <div class="user-action-pane">
         <section id="user_actions">
           <div style="padding: 10px;">
-            <button id="initiate_race_btn" onclick="initiate_race();">Initiate a race</button><br>
+            <button id="initiate_race_btn" class="btn btn-action" onclick="initiate_race();">Initiate a race</button><br>
           </div>
           <div style="padding:10px">
             <input type="text" id="race_id_box" placeholder="Race id shared by others?">
-            <button id="join_race_btn" onclick="join_race();">Join race</button><br>
+            <button id="join_race_btn" class="btn btn-action" onclick="join_race();">Join race</button><br>
           </div>
         </section>
         <section id="watch_section">
           <div style="padding:10px;">
             <h6 class="section-secondary-title">Want to watch a race?</h6>
             <input id="search_query_box_id" placeholder="Search..">
-            <button id="search_btn" onclick="search();">Search</button>
+            <button id="search_btn" class="btn btn-info" onclick="search();">Search</button>
           </div>
           <div id="feed">
+            <p>No race ongoing.</p>
           </div>
         </section>
       </div>

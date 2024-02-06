@@ -11,29 +11,29 @@
     <script type="text/javascript" src="/static/common.js"></script>
     <script type="text/javascript" src="/static/race.js"></script>
 
-    <div id="left-pane" style="float: left; width: 30%; height: 100vh;">
+    <div id="left-pane" class="pane">
       <div id="info-zone" style="height:80%; text-align: center; padding: 20px">
         title, introduction, duration and initiator will be here.
       </div>
       <div id="btn-zone" style="height:20%;">
         <div style="padding: 10px; text-align: center;">
-          <button id="join_btn" onclick="join_race();" class="btn btn-info rounded" style="width: 50%">Join!</button><br>
+          <button id="join_btn" onclick="join_race();" class="btn btn-info">Join!</button><br>
         </div>
         <div style="padding: 10px; text-align: center;">
-          <button id="invite_btn" onclick="copy_invitation();" class="btn btn-info rounded" style="width: 50%">Invite</button>
+          <button id="invite_btn" onclick="copy_invitation();" class="btn btn-info">Invite</button>
         </div>
       </div>
     </div>
 
-    <div id="mid-pane" style="float: left; width: 40%; height: 100vh; border-style: none none none ridge;">
+    <div id="mid-pane" class="pane">
 
-      <div id="task-pane" style="height: 50%; display: flex; overflow: auto; padding: 20px;">
+      <div id="task-pane" class="pane">
         <table id="tasks-table" class="table table-striped" style="width:100%">
           <thead style="background-color:#f8f9fa;">
             <tr>
-              <td style="width: 50%">Task</td>
-              <td style="width: 20%">Credits</td>
-              <td style="width: 30%">Action</td>
+              <th style="width: 50%">Task</th>
+              <th style="width: 20%">Credits</th>
+              <th style="width: 30%">Action</th>
             </tr>
           </thead>
           <tbody id="tasks-tbody">
@@ -49,12 +49,12 @@
         </table>
       </div>
       
-      <div id="racer-pane" style="height: 50%; overflow-y: scroll; padding: 10px; border-style: ridge none none none;">
+      <div id="racer-pane" class="pane">
         <table id="racers-table" class="table table-striped" style="width:100%">
           <thead style="background-color:#f8f9fa;">
             <tr>
-              <td style="width: 50%">Racer</td>
-              <td style="width: 50%">Standing</td>
+              <th style="width: 50%">Racer</th>
+              <th style="width: 50%">Standing</th>
             </tr>
           </thead>
           <tbody id="racers-tbody">
@@ -71,12 +71,12 @@
 
     </div>
 
-    <div id="right-pane" style="float: left; width: 30%; height: 100vh; border-style: none none none ridge;">
-      <div id="chat-pane" style="height: 90%; overflow:auto; padding: 20px;">
+    <div id="right-pane" class="pane">
+      <div id="chat-pane">
       </div>
-      <div style="height: 10%; padding: 10px">
-        <input id="chat-input" class="form-control" style="width: calc(100% - 100px); display: inline;" type="text">
-        <button id="send-btn" class="btn btn-info" style="display: inline; width: 80px;" onclick="send_chat_message();">Send</button>
+      <div id="input-pane">
+        <textarea id="chat-input" class="form-control" type="text"></textarea>
+        <button id="send-btn" class="btn btn-info" onclick="send_chat_message();">Send</button>
       </div>
     </div>
 

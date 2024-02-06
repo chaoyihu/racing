@@ -16,7 +16,7 @@
           <label><b>Task title</b></label><br>
           <input type="text" id="task_title_box_id"><br>
           <label><b>Description</b></label><br>
-          <input type="text" id="description_box_id" style="height:200px; width:80%;"><br>
+          <textarea type="text" id="description_box_id" style="height:200px; width:80%; overflow-y: scroll;"></textarea><br>
           <label><b>Assign credit(s)</b></label><br>
           <input type="number" id="credit_box_id">
           <div style="padding: 10px; text-align: center;">
@@ -26,36 +26,23 @@
         </div>
       </div>
       
-      <div style="padding:35px">
-        <h3 for="race-title"><b>Title of race</b></h3><br>
-        <input type="text" id="race-title-box-id"><br>
-      </div>
-  
-      <div style="padding:35px">
-        <h3 for="race-introduction"><b>Race introduction</b></h3><br>
-        <input type="text" id="race-introduction-box-id"><br>
-      </div>
-
-      <div style="padding:35px">
-        <h3 for="race-duration"><b>Duration (in minutes)</b></h3><br>
-        <input type="number" id="race-duration-box-id"><br>
-      </div>
-  
-      <div style="padding:35px">
-        <div>
-          <h3 for="task-list"><b>Task List</b></h3><br>
-        </div>
-        <div style="padding: 10px">
-          <button id="add_task_btn" class="btn btn-action" onclick='add_task("new_tid")';> Add Task</button>
-        </div>
+      <div class="race-info-pane">
+        <label for="race-title"><h3><b>Title of race</b></h3></label>
+        <p><input type="text" id="race-title-box-id"></p>
+        <label for="race-introduction"><h3><b>Race introduction</b></h3></label>
+        <p><textarea id="race-introduction-box-id"></textarea></p>
+        <label for="race-duration"><h3><b>Duration (in minutes)</b></h3></label>
+        <p><input type="number" id="race-duration-box-id"></p>
+        <h3 for="task-list"><b>Task List</b></h3>
+        <button id="add_task_btn" class="btn btn-info" onclick='add_task("new_tid")';> Add Task</button>
         <div style="padding:10px">
           <table id="task-table" class="table table-striped" style="width:80%; padding:10px;">
             <thead>
-              <tr>
-                <td style="width:60%">Task</td>
-                <td style="width:20%">Credits</td>
-                <td style="width:20%">Actions</td>
-              </tr>
+            <tr>
+                <th style="width:60%">Task</th>
+                <th style="width:20%">Credits</th>
+                <th style="width:20%">Actions</th>
+            </tr>
             </thead>
             <tbody>
               <!-- data should be included here -->
@@ -69,9 +56,7 @@
             </tr>
           </template>
         </div>
-        <div style="padding:10px">
-          <button id="initiate-btn" class="btn btn-action" onclick="initiate();">Initiate</button>
-        </div>
+        <button id="initiate-btn" class="btn btn-action" onclick="initiate();">Initiate</button>
       </div>
   
   </body>

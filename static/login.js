@@ -1,10 +1,10 @@
 if (get_cookie("session_id") !== "") {
     console.log("Sending session id to server:");
     session_id = get_cookie("session_id");
-    let data = `{
-        "type"      : "session_id", 
-        "session_id": "${session_id}"
-    }`;
+    let data = JSON.stringify({
+        type      : "session_id", 
+        session_id: session_id
+    });
     var url = window.location.host + "/login";
     var protocol = "http";
     var header_params = new Map();
@@ -19,11 +19,11 @@ function login() {
         alert("Username and password must not be empty.")
     } else {
         console.log("Sending credential to server.");
-        let data = `{
-            "type"    : "login_credential", 
-            "username": "${username}", 
-            "password": "${password}"
-        }`;
+        let data = JSON.stringify({
+            type    : "login_credential", 
+            username: username, 
+            password: password
+        });
         var url = window.location.host + "/login";
         var protocol = "http";
         var header_params = new Map();
