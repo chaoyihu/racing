@@ -7,8 +7,9 @@ from handlers.index import IndexHandler
 from handlers.login import LoginHandler
 from handlers.register import RegisterHandler
 from handlers.profile import ProfileViewHandler, ProfileActionHandler
-## race
-from handlers.race import RaceHandler
+## sprint
+from handlers.sprint_planning import SprintPlanningHandler
+from handlers.sprint import SprintHandler
 from handlers.task import TaskHandler
 from handlers.pubsub import PubsubHandler
 ## static
@@ -37,8 +38,9 @@ def main():
             (r"/register",        RegisterHandler),
             (r"/profile/user/([^/]+)",   ProfileViewHandler),
             (r"/profile/action/([^/]+)", ProfileActionHandler),
-            # race
-            (r"/race/([^/]+)",    RaceHandler),
+            # sprint
+            (r"/sprint/planning",   SprintPlanningHandler),
+            (r"/sprint/([^/]+)",    SprintHandler),
             (r"/task/([^/]+)",    TaskHandler),
             (r"/pubsub",          PubsubHandler),    # websocket
             # static

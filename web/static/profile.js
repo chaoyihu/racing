@@ -34,13 +34,13 @@ function get_user_info() {
 }
 
  
-function new_race() {
-   my_redirect("/new_race", "https"); 
+function new_sprint() {
+   my_redirect("/sprint/planning", "https"); 
 };
 
-function join_race() {
-   var race_id = document.getElementById("race_id_box").value;
-   my_redirect("/race/" + race_id, "https");
+function join_sprint() {
+   var sprint_id = document.getElementById("sprint_id_box").value;
+   my_redirect("/sprint/" + sprint_id, "https");
 };
 
 function search() {

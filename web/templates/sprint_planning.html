@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-      <link rel="stylesheet" type="text/css" href="../static/style.css">
-      <link rel="icon" type="image/x-icon" href="../static/imgs/favicon.ico">
+      <link rel="stylesheet" type="text/css" href="/static/style.css">
+      <link rel="icon" type="image/x-icon" href="/static/imgs/favicon.ico">
     </head>
   
     <body>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-      <script type="text/javascript" src="../static/common.js"></script>
-      <script type="text/javascript" src="../static/new_race.js"></script>
+      <script type="text/javascript" src="/static/common.js"></script>
+      <script type="text/javascript" src="/static/sprint_planning.js"></script>
   
       <div id="complete_overlay" style="padding: 10%;">
         <div style="background-color: white; padding: 10px;">
@@ -20,19 +20,19 @@
           <label><b>Assign credit(s)</b></label><br>
           <input type="number" id="credit_box_id">
           <div style="padding: 10px; text-align: center;">
-            <button id="confirm_edit" class="btn btn-primary">Confirm Edit</button> <!-- onclick will be defined in script -->
+            <button id="confirm_edit" class="btn btn-primary">Confirm Edit</button>
             <button id="cancel_edit" class="btn btn-secondary" onclick="overlay_off();">Cancel</button>
           </div>
         </div>
       </div>
       
-      <div class="race-info-pane">
-        <label for="race-title"><h3><b>Title of race</b></h3></label>
-        <p><input type="text" id="race-title-box-id"></p>
-        <label for="race-introduction"><h3><b>Race introduction</b></h3></label>
-        <p><textarea id="race-introduction-box-id"></textarea></p>
-        <label for="race-duration"><h3><b>Duration (in minutes)</b></h3></label>
-        <p><input type="number" id="race-duration-box-id"></p>
+      <div class="sprint-info-pane">
+        <label for="sprint-title"><h3><b>Title of sprint</b></h3></label>
+        <p><input type="text" id="sprint-title-box-id"></p>
+        <label for="sprint-introduction"><h3><b>Introduction</b></h3></label>
+        <p><textarea id="sprint-introduction-box-id"></textarea></p>
+        <label for="sprint-duration"><h3><b>Duration (in minutes)</b></h3></label>
+        <p><input type="number" id="sprint-duration-box-id"></p>
         <h3 for="task-list"><b>Task List</b></h3>
         <button id="add_task_btn" class="btn btn-info" onclick='add_task("new_tid")';> Add Task</button>
         <div style="padding:10px">

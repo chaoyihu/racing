@@ -1,37 +1,32 @@
-// execute immediately
-new_race()
-var counter = 0;
-var all_tasks = new Map();
-
-
-// Create new race
-function new_race() {
-  var xhr = new XMLHttpRequest();
-  var url = window.location.href + "/get_race_id";
-  var protocol = "https";
-  if (!url.startsWith(protocol)) {
-      url = protocol + "://" + url;
-  };
-  xhr.open("GET", url);
-  xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.onload = () => {
-    var parser = server_message_check(xhr.responseText);
-    if (!parser.success) {
-      console.log(parser.message);
-    } else {
-      var cookies_map = parser.data;
-      Object.keys(cookies_map).forEach(function(cookie_name) {
-        set_cookie(cookie_name, cookies_map[cookie_name], 10);
-      })
-    }
-  };
-  xhr.send(data);
-}
+var counter = 0;   // for increment task id
+var all_tasks = new Map();  // all dom nodes for task rows
 
 
 function add_task() {
-  document.querySelector("#confirm_edit").addEventListener("click", () => confirm_edit("new_tid"));
+  document.querySelector("#confirm_edit").addEventListener("click", function() {
+    confirm_edit("new_tid");
+  });
   document.getElementById("complete_overlay").style.display = "block";
+};
+
+
+function edit_task(tid) {
+  document.querySelector("#confirm_edit").addEventListener("click", function() {
+    confirm_edit(tid);
+  });
+  document.getElementById("complete_overlay").style.display = "block";
+
+  var row = all_tasks.get(tid);
+  document.getElementById("task_title_box_id").value = row.info["ttitle"];
+  document.getElementById("description_box_id").value = row.info["tdescription"];
+  document.getElementById("credit_box_id").value = row.info["tcredits"];
+};
+
+
+function delete_task(tid) {
+  document.getElementById(`task_row_${tid.split('+').slice(-1)}`).remove();
+  all_tasks.delete(tid);
+  console.log(`Deleting task, tid: ${tid}`);
 };
 
 
@@ -39,9 +34,8 @@ function confirm_edit(tid) {
   console.log(tid);
   if (tid == "new_tid") {
     counter += 1;
-    race_id = get_cookie("race_id");
-    var tid = race_id + '+task+' + counter;
-    console.log(`Editing new task, tid: ${tid}`);
+    var tid = 'task+' + counter;
+    console.log(`Adding new task, tid: ${tid}`);
     var existing = false;
   } else {
     console.log(`Editing existing task, tid: ${tid}`);
@@ -51,10 +45,8 @@ function confirm_edit(tid) {
   tdescription = document.getElementById("description_box_id").value;
   tcredits = document.getElementById("credit_box_id").value;
   tlink = "/task/" + tid;
-
   // show new row on page or update row if just editing existing task.
   insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing);
-
   //remove event listener
   var old_element = document.getElementById("confirm_edit");
   var new_element = old_element.cloneNode(true);
@@ -66,10 +58,9 @@ function confirm_edit(tid) {
   document.getElementById("credit_box_id").value = null;
 };
 
-
 function overlay_off() {
   document.getElementById("complete_overlay").style.display = "none";
-};
+}
 
 
 function insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing) {
@@ -89,54 +80,32 @@ function insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing) {
   td[2].innerHTML = `
     <button class="btn btn-secondary" onclick="edit_task('${tid}');"> Edit</button>
     <button class="btn btn-secondary" onclick="delete_task('${tid}');">Delete</button>
-    `
-  // define row info (for display in edit_task)
+  `
   row.info = {
     "tid"         : tid,
     "ttitle"      : ttitle, 
     "tdescription": tdescription,
     "tcredits"    : tcredits
   }
-  all_tasks[tid] = row;
-};
-
-
-function edit_task(tid) {
-  document.querySelector("#confirm_edit").addEventListener("click", () => confirm_edit(`${tid}`));
-  document.getElementById("complete_overlay").style.display = "block";
-
-  var dom_task_row = all_tasks[tid];
-  document.getElementById("task_title_box_id").value = dom_task_row.info["ttitle"];
-  document.getElementById("description_box_id").value = dom_task_row.info["tdescription"];
-  document.getElementById("credit_box_id").value = dom_task_row.info["tcredits"];
-};
-
-function delete_task(tid) {
-  document.getElementById(`task_row_${tid.split('+').slice(-1)}`).remove();
-  console.log(`Deleting task, tid: ${tid}`);
-  let data = JSON.stringify({
-      type       : "delete_task", 
-      id         : tid
-  });
-  
+  all_tasks.set(tid, row);
 };
 
 
 function initiate() {
-  // rid is in get_cookie("race_id")
-  rtitle = document.getElementById("race-title-box-id").value;
-  rintroduction = document.getElementById("race-introduction-box-id").value;
-  console.log(rintroduction);
-  rduration = document.getElementById("race-duration-box-id").value;
-  //rtasks will be retrieved in database by `keys rid+task*`
+  var rtitle = document.getElementById("sprint-title-box-id").value;
+  var rintroduction = document.getElementById("sprint-introduction-box-id").value;
+  var rduration = document.getElementById("sprint-duration-box-id").value;
   let data = JSON.stringify({
-      type         : "confirm_new_race",
+    sprint_info: {
       title        : rtitle,
       introduction : rintroduction,
       duration    :  rduration
+    },
+    tasks: Array.from(all_tasks.values()).map(row => row.info)
   });
+  console.log(data);
   var xhr = new XMLHttpRequest();
-  var url = window.location.href + "/confirm_new_race";
+  var url = window.location.href;
   var protocol = "https";
   if (!url.startsWith(protocol)) {
       url = protocol + "://" + url;
@@ -149,8 +118,12 @@ function initiate() {
       console.log(parser.message);
     } else {
       var obj = parser.data;
-      set_cookie("race_id", obj["race_id"], 10);
-      my_redirect(obj["redirect_url"], obj["protocol"]);
+      if (obj["type"] == "alert") {
+        console.log(obj["message"]);
+      } else {
+        set_cookie("sprint_id", obj["sprint_id"], 10);
+        my_redirect(obj["redirect_url"], obj["protocol"]);
+      }
     }
   };
   xhr.send(data);

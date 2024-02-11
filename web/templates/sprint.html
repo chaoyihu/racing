@@ -9,7 +9,7 @@
 
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>
     <script type="text/javascript" src="/static/common.js"></script>
-    <script type="text/javascript" src="/static/race.js"></script>
+    <script type="text/javascript" src="/static/sprint.js"></script>
 
     <div id="left-pane" class="pane">
       <div id="info-zone" style="height:80%; text-align: center; padding: 20px">
@@ -17,7 +17,7 @@
       </div>
       <div id="btn-zone" style="height:20%;">
         <div style="padding: 10px; text-align: center;">
-          <button id="join_btn" onclick="join_race();" class="btn btn-info">Join!</button><br>
+          <button id="join_btn" onclick="join_sprint();" class="btn btn-info">Join!</button><br>
         </div>
         <div style="padding: 10px; text-align: center;">
           <button id="invite_btn" onclick="copy_invitation();" class="btn btn-info">Invite</button>
@@ -49,18 +49,18 @@
         </table>
       </div>
       
-      <div id="racer-pane" class="pane">
-        <table id="racers-table" class="table table-striped" style="width:100%">
+      <div id="sprinter-pane" class="pane">
+        <table id="sprinters-table" class="table table-striped" style="width:100%">
           <thead style="background-color:#f8f9fa;">
             <tr>
-              <th style="width: 50%">Racer</th>
+              <th style="width: 50%">sprinter</th>
               <th style="width: 50%">Standing</th>
             </tr>
           </thead>
-          <tbody id="racers-tbody">
+          <tbody id="sprinters-tbody">
             <!-- data should be included here -->
           </tbody>
-          <template id="racer-row">
+          <template id="sprinter-row">
             <tr>
               <td class="record"></td>
               <td></td>

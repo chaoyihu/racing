@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-async def update_task(tid, ttitle, tdescription, tcredits):
+async def add_task(tid, ttitle, tdescription, tcredits):
     try:
         r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
         r.set(tid + ":title", ttitle)
@@ -17,27 +17,14 @@ async def update_task(tid, ttitle, tdescription, tcredits):
         r.quit()
         return False
 
-async def delete_task(tid):
-    try:
-        r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
-        r.delete(tid + ":title")
-        r.delete(tid + ":description")
-        r.delete(tid + ":credits")
-        print("Task info deleted.")
-        r.quit()
-        return True
-    except:
-        r.quit()
-        return False
-
-async def add_race(rid, rtitle, rintroduction, rduration, rinitiator):
+async def add_sprint(rid, rtitle, rintroduction, rduration, rinitiator):
     try:
         r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
         r.set(rid + ":title", rtitle)
         r.set(rid + ":introduction", rintroduction)
         r.set(rid + ":duration", rduration)
         r.set(rid + ":initiator", rinitiator)
-        print("Race info added.")
+        print("sprint info added.")
         r.quit()
         return True
     except:
@@ -54,28 +41,28 @@ async def publish(channel, data):
         r.quit()
         return False
 
-async def incr_racer_count(race_id):
+async def incr_sprinter_count(sprint_id):
     r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
-    res = r.incr(race_id + ":NUM_OF_RACER") 
+    res = r.incr(sprint_id + ":NUM_OF_sprinter") 
     r.quit()
     return res
 
-async def incr_ready_count(race_id):
+async def incr_ready_count(sprint_id):
     r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
-    res = r.incr(race_id + ":NUM_OF_READY") 
+    res = r.incr(sprint_id + ":NUM_OF_READY") 
     r.quit()
     return res
 
 
-async def get_racer_count(race_id):
+async def get_sprinter_count(sprint_id):
     r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
-    res = r.get(race_id + ":NUM_OF_RACER") 
+    res = r.get(sprint_id + ":NUM_OF_sprinter") 
     r.quit()
     return int(res)
 
-async def get_ready_count(race_id):
+async def get_ready_count(sprint_id):
     r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
-    res = r.get(race_id + ":NUM_OF_READY") 
+    res = r.get(sprint_id + ":NUM_OF_READY") 
     r.quit()
     return int(res)
 

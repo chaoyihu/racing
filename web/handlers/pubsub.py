@@ -5,7 +5,7 @@ import threading
 import asyncio
 from tornado.websocket import WebSocketHandler
 from utils.mycookie import get_cookie
-from utils.myredis import *
+from utils.myredis import incr_sprinter_count, get_sprinter_count, publish, incr_ready_count
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -15,45 +15,47 @@ class PubsubHandler(WebSocketHandler):
     
     async def open(self):
         self.r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
-        self.race_id = get_cookie(self.request.headers.get("Cookie"), "race_id")
+        self.sprint_id = get_cookie(self.request.headers.get("Cookie"), "sprint_id")
         self.session_id = get_cookie(self.request.headers.get("Cookie"), "session_id")
         self.listen_thread = threading.Thread(target=self.pubsub_listen)
         self.listen_thread.setDaemon(True)
         self.listen_thread.start()
 
     async def on_message(self, message):
-        print(message)
+        print("Server receive message:", message)
         data = json.loads(message)
-        if data["type"] == "join_race":
+        if data["type"] == "join_sprint":
             username = self.r.get(self.session_id + ":username")
             data = {
-                    "type": "new_racer",
-                    "name": username
-                }
-            success = await publish("ch+" + self.race_id, json.dumps(data))
-            success = await incr_racer_count(self.race_id)
-
+                "type": "new_sprinter",
+                "name": username
+            }
+            success = await publish("ch+" + self.sprint_id, json.dumps(data))
+            success = await incr_sprinter_count(self.sprint_id)
         if data["type"] == "chat_message":
             username = self.r.get(self.session_id + ":username")
             data["publisher"] = username
-            success = await publish("ch+" + self.race_id, json.dumps(data))
-
+            success = await publish("ch+" + self.sprint_id, json.dumps(data))
         if data["type"] == "ready":
             username = self.r.get(self.session_id + ":username")
             data["publisher"] = username
-            success = await publish("ch+" + self.race_id, json.dumps(data))
-            num_of_ready = await incr_ready_count(self.race_id)
-            num_of_racer = await get_racer_count(self.race_id)
-            if num_of_ready == num_of_racer:
+            success = await publish("ch+" + self.sprint_id, json.dumps(data))
+            num_of_ready = await incr_ready_count(self.sprint_id)
+            num_of_sprinter = await get_sprinter_count(self.sprint_id)
+            if num_of_ready == num_of_sprinter:
                 data = {
-                        "type": "start_race"
-                    }
-                success = await publish("ch+" + self.race_id, json.dumps(data))
-
+                    "type": "start_sprint"
+                }
+                success = await publish("ch+" + self.sprint_id, json.dumps(data))
         if data["type"] == "finish_task":
             username = self.r.get(self.session_id + ":username")
             data["publisher"] = username
-            success = await publish("ch+" + self.race_id, json.dumps(data))
+            success = await publish("ch+" + self.sprint_id, json.dumps(data))
+
+        if success:
+            print("Publish successful! Channel:", self.sprint_id)
+        else:
+            print("Publish failed! Channel:", self.sprint_id)
 
             
     async def on_close(self):
@@ -64,8 +66,8 @@ class PubsubHandler(WebSocketHandler):
         print("Connected.")
         self.rp = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
         self.q = self.rp.pubsub()
-        print("Subscribing to channel:", "ch+" + self.race_id)
-        self.q.subscribe("ch+" + self.race_id)
+        print("Subscribing to channel:", "ch+" + self.sprint_id)
+        self.q.subscribe("ch+" + self.sprint_id)
         for m in self.q.listen():
             print(m)
             json_str = m["data"]

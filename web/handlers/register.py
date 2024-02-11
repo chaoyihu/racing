@@ -18,16 +18,13 @@ class RegisterHandler(RequestHandler):
         s = self.request.body.decode(encoding="utf-8")
         data = json.loads(s)
         print(data)
-        if data["type"] != "register_info":
-            print(f"Unknown message type from client: ", data["type"])
-            return None
         r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
         print("checking if username is available.")
         exists = r.exists(data["username"] + ":password")
         if exists:
             self.write(json.dumps({
                 "type": "alert",
-                "text": "Username already exists."
+                "message": "Username already exists."
                 }))
         else:
             print("assign a session id")
@@ -36,7 +33,7 @@ class RegisterHandler(RequestHandler):
             self.write(json.dumps({
                 "type": "redirect",
                 "protocol": "https",
-                "url": "/profile/" + session_id,
+                "url": "/profile/user" + data["username"],
                 "session_id": session_id,
                 }))
             print(data["username"], r.get(session_id +":username"))

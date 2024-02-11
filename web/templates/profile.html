@@ -11,7 +11,7 @@
     <script type="text/javascript" src="/static/common.js"></script>
     <script type="text/javascript" src="/static/profile.js"></script>
 
-    <div id="main">
+    <div id="profile-main-container">
       
       <div id="user-info-pane">
         <div id="user-profile-pic-container">
@@ -25,21 +25,21 @@
       <div class="user-action-pane">
         <section id="user_actions">
           <div style="padding: 10px;">
-            <button id="new_race_btn" class="btn btn-action" onclick="new_race();">Initiate a race</button><br>
+            <button id="new_sprint_btn" class="btn btn-action" onclick="new_sprint();">Plan a new sprint</button><br>
           </div>
           <div style="padding:10px">
-            <input type="text" id="race_id_box" placeholder="Race id shared by others?">
-            <button id="join_race_btn" class="btn btn-action" onclick="join_race();">Join race</button><br>
+            <input type="text" id="sprint_id_box" placeholder="sprint id shared by others?">
+            <button id="join_sprint_btn" class="btn btn-action" onclick="join_sprint();">Join sprint</button><br>
           </div>
         </section>
         <section id="watch_section">
           <div style="padding:10px;">
-            <h6 class="section-secondary-title">Want to watch a race?</h6>
+            <h6 class="section-secondary-title">Want to watch a sprint?</h6>
             <input id="search_query_box_id" placeholder="Search..">
             <button id="search_btn" class="btn btn-info" onclick="search();">Search</button>
           </div>
           <div id="feed">
-            <p>No race ongoing.</p>
+            <p>No sprint ongoing.</p>
           </div>
         </section>
       </div>
