@@ -1,6 +1,6 @@
 // in case of a shared inviting link
 if (get_cookie("session_id") == "") {
-  my_redirect("/login", "http");
+  my_redirect("/login", "https");
 } else {
   sp = window.location.pathname.split("/");
   race_id = sp[sp.length - 1];
@@ -12,7 +12,7 @@ if (get_cookie("session_id") == "") {
       "type"    : "get_race_info"
   });
   var url = window.location.href;
-  var protocol = "http";
+  var protocol = "https";
   var header_params = new Map();
   header_params.set("Content-Type", "application/json");
   my_xhr_post(data, url, protocol, header_params);

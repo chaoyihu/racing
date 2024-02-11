@@ -71,5 +71,3 @@ class PubsubHandler(WebSocketHandler):
             json_str = m["data"]
             print("Sending to client:", json_str)
             self.write_message(json.dumps(json_str))
-
-

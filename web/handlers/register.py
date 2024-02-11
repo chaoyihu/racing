@@ -35,7 +35,7 @@ class RegisterHandler(RequestHandler):
             session_id = await register_session(data["username"])
             self.write(json.dumps({
                 "type": "redirect",
-                "protocol": "http",
+                "protocol": "https",
                 "url": "/profile/" + session_id,
                 "session_id": session_id,
                 }))

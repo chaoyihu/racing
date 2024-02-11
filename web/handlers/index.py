@@ -11,4 +11,3 @@ class IndexHandler(RequestHandler):
         html_file = os.getenv("HTML_PATH") + "/index.html"
         with open(html_file) as f:
             self.write(f.read())
-

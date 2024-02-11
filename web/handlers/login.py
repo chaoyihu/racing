@@ -29,29 +29,24 @@ class LoginHandler(RequestHandler):
         print(data)
         if data["type"] == "login_credential":
             credential = {
-                    "type": "password", 
-                    "username": data["username"],
-                    "password": data["password"]
-                    }
-        if data["type"] == "session_id":
-            credential = {
-                    "type": "session_id", 
-                    "session_id": data["session_id"]
-                    }
+                "type": "password", 
+                "username": data["username"],
+                "password": data["password"]
+                }
         validity, text = await self.credential_check(credential)
         if validity: # Assign or renew session id.
             session_id = text
             self.write(json.dumps({
                 "type": "redirect",
-                "protocol": "http",
-                "url": "/profile/" + session_id,
+                "protocol": "https",
+                "redirect_url": "/profile/user/" + data["username"],
                 "session_id": session_id,
                 }))
         else:                   # Alert error.
             error = text
             self.write(json.dumps({
                 "type": "alert", 
-                "text": error
+                "message": error
                 }))
 
 

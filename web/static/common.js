@@ -1,40 +1,15 @@
-function handle_server_message(txt) {
-    console.log(txt);
-    var obj = JSON.parse(txt);
-    if (typeof(obj) == "string") {
-      obj = JSON.parse(obj);
-    };
-    console.log(typeof(obj));
-    console.log(obj);
-    console.log(obj["type"]);
-    if (obj["type"] == "log") {
-        console.log(obj["text"]);
-    };
-    
-    if (obj["type"] == "alert") {
-        alert(obj["text"]);
-    };
-    
-    if (obj["type"] == "ping") {
-        console.log("Ping");
-        ws.send(`{"type": "pong"}`);
-    };
-
-    if (obj["type"] == "redirect") {
-        my_redirect(obj["url"], obj["protocol"]);
-        delete obj["type"];
-        delete obj["url"];
-        delete obj["protocol"];
-        Object.keys(obj).forEach(function(key) {
-          set_cookie(key, obj[key], 10);
-        })
-    };
-    
-    if (obj["type"] == "cookie") {
-        delete obj["type"];
-        Object.keys(obj).forEach(function(key) {
-          set_cookie(key, obj[key], 10);
-        })
+function server_message_check(responseText) {
+    try {
+      var obj = JSON.parse(responseText);
+      return {
+        success: true,
+        data: obj
+      }
+    } catch (error) {
+      return {
+        success: false, 
+        message: `Failure to parse server response as json: ${responseText}`
+      }
     }
 
     if (obj["type"] == "user_data") {

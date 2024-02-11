@@ -12,9 +12,16 @@ function register() {
             password: password
         });
         var url = window.location.host + "/register";
-        var protocol = "http";
-        var header_params = new Map();
-        header_params.set("Content-Type", "application/json");
-        my_xhr_post(data, url, protocol, header_params);
+        var protocol = "https";
+        var xhr = new XMLHttpRequest();
+        if (!url.startsWith(protocol)) {
+            url = protocol + "://" + url;
+        };
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function() {
+            
+        };
+        xhr.send(data);
     };
 }

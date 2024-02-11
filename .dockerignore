@@ -4,6 +4,8 @@
 # For more help, visit the .dockerignore file reference guide at
 # https://docs.docker.com/engine/reference/builder/#dockerignore-file
 
+LICENSE
+README.md
 **/.DS_Store
 **/__pycache__
 **/.venv
@@ -30,5 +32,4 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
-LICENSE
-README.md
+**/secrets/*

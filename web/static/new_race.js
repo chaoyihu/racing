@@ -1,22 +1,39 @@
-// Create new race
-let data = JSON.stringify({
-    type    : "request_race"
-});
-var url = window.location.href;
-var protocol = "http";
-var header_params = new Map();
-header_params.set("Content-Type", "application/json");
-my_xhr_post(data, url, protocol, header_params);
-// Server will reply with a race_id, which will be handled by 
-// `handle_server_message` and race_id will be added to cookie.
- 
+// execute immediately
+new_race()
 var counter = 0;
 var all_tasks = new Map();
+
+
+// Create new race
+function new_race() {
+  var xhr = new XMLHttpRequest();
+  var url = window.location.href + "/get_race_id";
+  var protocol = "https";
+  if (!url.startsWith(protocol)) {
+      url = protocol + "://" + url;
+  };
+  xhr.open("GET", url);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onload = () => {
+    var parser = server_message_check(xhr.responseText);
+    if (!parser.success) {
+      console.log(parser.message);
+    } else {
+      var cookies_map = parser.data;
+      Object.keys(cookies_map).forEach(function(cookie_name) {
+        set_cookie(cookie_name, cookies_map[cookie_name], 10);
+      })
+    }
+  };
+  xhr.send(data);
+}
+
 
 function add_task() {
   document.querySelector("#confirm_edit").addEventListener("click", () => confirm_edit("new_tid"));
   document.getElementById("complete_overlay").style.display = "block";
 };
+
 
 function confirm_edit(tid) {
   console.log(tid);
@@ -35,24 +52,8 @@ function confirm_edit(tid) {
   tcredits = document.getElementById("credit_box_id").value;
   tlink = "/task/" + tid;
 
-  // front-end: show new row on page or update row if just editing existing task.
+  // show new row on page or update row if just editing existing task.
   insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing);
-
-  // back-end: create/update task info in database.
-  console.log(`Sending task info to server, tid: ${tid}`);
-  let data = JSON.stringify({
-      type       : "task_info", 
-      id         : tid,
-      title      : ttitle, 
-      description: tdescription,
-      credits    : tcredits
-  });
-  var url = window.location.host + window.location.pathname;
-  var protocol = "http";
-  var header_params = new Map();
-  header_params.set("Content-Type", "application/json");
-  my_xhr_post(data, url, protocol, header_params);
-  // reply will be handled by function in common.js
 
   //remove event listener
   var old_element = document.getElementById("confirm_edit");
@@ -65,9 +66,11 @@ function confirm_edit(tid) {
   document.getElementById("credit_box_id").value = null;
 };
 
+
 function overlay_off() {
   document.getElementById("complete_overlay").style.display = "none";
 };
+
 
 function insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing) {
   if (!existing) {
@@ -97,6 +100,7 @@ function insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing) {
   all_tasks[tid] = row;
 };
 
+
 function edit_task(tid) {
   document.querySelector("#confirm_edit").addEventListener("click", () => confirm_edit(`${tid}`));
   document.getElementById("complete_overlay").style.display = "block";
@@ -114,12 +118,9 @@ function delete_task(tid) {
       type       : "delete_task", 
       id         : tid
   });
-  var url = window.location.host + window.location.pathname;
-  var protocol = "http";
-  var header_params = new Map();
-  header_params.set("Content-Type", "application/json");
-  my_xhr_post(data, url, protocol, header_params);
+  
 };
+
 
 function initiate() {
   // rid is in get_cookie("race_id")
@@ -129,15 +130,28 @@ function initiate() {
   rduration = document.getElementById("race-duration-box-id").value;
   //rtasks will be retrieved in database by `keys rid+task*`
   let data = JSON.stringify({
-      type         : "initiate_race",
+      type         : "confirm_new_race",
       title        : rtitle,
       introduction : rintroduction,
       duration    :  rduration
   });
-  var url = window.location.href;
-  var protocol = "http";
-  var header_params = new Map();
-  header_params.set("Content-Type", "application/json");
-  my_xhr_post(data, url, protocol, header_params);
-  // server will redirect
+  var xhr = new XMLHttpRequest();
+  var url = window.location.href + "/confirm_new_race";
+  var protocol = "https";
+  if (!url.startsWith(protocol)) {
+      url = protocol + "://" + url;
+  };
+  xhr.open("POST", url);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onload = () => {
+    var parser = server_message_check(xhr.responseText);
+    if (!parser.success) {
+      console.log(parser.message);
+    } else {
+      var obj = parser.data;
+      set_cookie("race_id", obj["race_id"], 10);
+      my_redirect(obj["redirect_url"], obj["protocol"]);
+    }
+  };
+  xhr.send(data);
 };
