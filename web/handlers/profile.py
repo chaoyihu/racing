@@ -29,6 +29,5 @@ class ProfileActionHandler(RequestHandler):
             self.write(json.dumps({
                 "type": "user_data",
                 "username": username,
-                "user_history": ["history1", "history2"],
                 "user_level": 0
                 }))

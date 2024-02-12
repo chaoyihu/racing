@@ -25,7 +25,6 @@ function get_user_info() {
          console.log(obj);
          document.getElementById("user-info").innerHTML = `
             <p>username: ${obj["username"]}</p>
-            <p>history: ${obj["user_history"]}</p>
             <p>level: ${obj["user_level"]}</p>
          `;
       }
