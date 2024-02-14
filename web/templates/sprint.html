@@ -11,23 +11,22 @@
     <script type="text/javascript" src="/static/common.js"></script>
     <script type="text/javascript" src="/static/sprint.js"></script>
 
-    <div id="left-pane" class="pane">
-      <div id="info-zone" style="height:80%; text-align: center; padding: 20px">
-        title, introduction, duration and initiator will be here.
-      </div>
-      <div id="btn-zone" style="height:20%;">
-        <div style="padding: 10px; text-align: center;">
-          <button id="join_btn" onclick="join_sprint();" class="btn btn-info">Join!</button><br>
-        </div>
-        <div style="padding: 10px; text-align: center;">
-          <button id="invite_btn" onclick="copy_invitation();" class="btn btn-info">Invite</button>
+    <div id="left-pane">
+      <div id="info-title"></div>
+      <div id="dynamic-zone-1">
+        <div id="timer">
+          <button id="join-btn" onclick="join_sprint();" class="btn btn-action">Join this sprint</button>
         </div>
       </div>
+      <div id="team-id-copy"></div>
+      <div id="info-initiator"></div>
+      <div id="info-duration"></div>
+      <div id="info-introduction"></div>
     </div>
 
-    <div id="mid-pane" class="pane">
+    <div id="mid-pane">
 
-      <div id="task-pane" class="pane">
+      <div id="task-pane">
         <table id="tasks-table" class="table table-striped" style="width:100%">
           <thead style="background-color:#f8f9fa;">
             <tr>
@@ -49,11 +48,11 @@
         </table>
       </div>
       
-      <div id="sprinter-pane" class="pane">
+      <div id="sprinter-pane">
         <table id="sprinters-table" class="table table-striped" style="width:100%">
           <thead style="background-color:#f8f9fa;">
             <tr>
-              <th style="width: 50%">sprinter</th>
+              <th style="width: 50%">Sprinter</th>
               <th style="width: 50%">Standing</th>
             </tr>
           </thead>
@@ -71,12 +70,12 @@
 
     </div>
 
-    <div id="right-pane" class="pane">
+    <div id="right-pane">
       <div id="chat-pane">
       </div>
       <div id="input-pane">
         <textarea id="chat-input" class="form-control" type="text"></textarea>
-        <button id="send-btn" class="btn btn-info" onclick="send_chat_message();">Send</button>
+        <button id="send-btn" onclick="send_chat_message();">Send</button>
       </div>
     </div>
 

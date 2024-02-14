@@ -44,9 +44,8 @@ function confirm_edit(tid) {
   ttitle = document.getElementById("task_title_box_id").value;
   tdescription = document.getElementById("description_box_id").value;
   tcredits = document.getElementById("credit_box_id").value;
-  tlink = "/task/" + tid;
   // show new row on page or update row if just editing existing task.
-  insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing);
+  insert_task_row(tid, ttitle, tdescription, tcredits, existing);
   //remove event listener
   var old_element = document.getElementById("confirm_edit");
   var new_element = old_element.cloneNode(true);
@@ -63,7 +62,7 @@ function overlay_off() {
 }
 
 
-function insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing) {
+function insert_task_row(tid, ttitle, tdescription, tcredits, existing) {
   if (!existing) {
     // new task
     var template = document.querySelector('#task_row');
@@ -75,7 +74,7 @@ function insert_task_row(tid, ttitle, tdescription, tcredits, tlink, existing) {
   var row = document.querySelector(`#task_row_${tid.split('+').slice(-1)}`);
   // define row content
   var td = row.querySelectorAll("td");
-  td[0].innerHTML = '<a href="'+ tlink +'">'+ ttitle +'</a>';
+  td[0].innerHTML = '<p>'+ ttitle +'</p>';
   td[1].textContent = tcredits;
   td[2].innerHTML = `
     <button class="btn btn-secondary" onclick="edit_task('${tid}');"> Edit</button>

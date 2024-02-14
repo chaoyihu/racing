@@ -14,34 +14,31 @@
     <div id="profile-main-container">
       
       <div id="user-info-pane">
-        <div id="user-profile-pic-container">
-          <img src="/static/imgs/default-profile-pic.jpg">
-        </div>
+        <img class="user-profile-pic" src="/static/imgs/default-profile-pic.jpg">
         <div id="user-info">
           User info
         </div>
       </div>
       
       <div class="user-action-pane">
-        <section id="user_actions">
-          <div style="padding: 10px;">
-            <button id="new_sprint_btn" class="btn btn-action" onclick="new_sprint();">Plan a new sprint</button><br>
+          <div>
+            <h3>Plan a new sprint</h3>
+            <p>Plan a new sprint for your team:</p>
+            <ul>
+              <li>Choose a descriptive title for the sprint event.</li>
+              <li>Write an introduction, setting clear goals and introducing main methodology.</li>
+              <li>Define specific tasks to be completed.</li>
+              <li>Set a timer for the event.</li>
+            </ul>
+            <button id="new_sprint_btn" class="btn btn-action" onclick="new_sprint();">Start sprint planning</button><br>
           </div>
-          <div style="padding:10px">
-            <input type="text" id="sprint_id_box" placeholder="sprint id shared by others?">
+          <div>
+            <h3>Join a sprint</h3>
+            <p>If your team has an exiting sprint event, you can ask the creator for the sprint ID and paste it below to join.</p>
+            <input type="text" id="sprint_id_box" placeholder="sprint id shared by others">
             <button id="join_sprint_btn" class="btn btn-action" onclick="join_sprint();">Join sprint</button><br>
           </div>
-        </section>
-        <section id="watch_section">
-          <div style="padding:10px;">
-            <h6 class="section-secondary-title">Want to watch a sprint?</h6>
-            <input id="search_query_box_id" placeholder="Search..">
-            <button id="search_btn" class="btn btn-info" onclick="search();">Search</button>
-          </div>
-          <div id="feed">
-            <p>No sprint ongoing.</p>
-          </div>
-        </section>
+          
       </div>
 
     </div>

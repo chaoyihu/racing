@@ -27,13 +27,13 @@ class RegisterHandler(RequestHandler):
                 "message": "Username already exists."
                 }))
         else:
-            print("assign a session id")
+            print("Assign a session id. Redirect to user profile page.")
             r.set(data["username"] + ":password", data["password"])
             session_id = await register_session(data["username"])
             self.write(json.dumps({
                 "type": "redirect",
                 "protocol": "https",
-                "url": "/profile/user" + data["username"],
+                "redirect_url": "/profile/user/" + data["username"],
                 "session_id": session_id,
                 }))
             print(data["username"], r.get(session_id +":username"))

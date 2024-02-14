@@ -1,10 +1,18 @@
-// in case of a shared inviting link
+// In case user visits this page without logging in
 if (get_cookie("session_id") == "") {
   my_redirect("/login", "https");
-} else {
-  sp = window.location.pathname.split("/");
-  sprint_id = sp[sp.length - 1];
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var sp = window.location.pathname.split("/");
+  var sprint_id = sp[sp.length - 1];
   set_cookie("sprint_id", sprint_id, 10);
+  
+  // Show sprint id
+  document.getElementById("team-id-copy").innerHTML=`
+    Click to copy sprint ID and share to invite:
+    <p onclick="copy_invitation();">${sprint_id}</p>
+  `;
   
   // Load sprint info
   console.log("Getting sprint info.")
@@ -35,21 +43,27 @@ if (get_cookie("session_id") == "") {
             sum_of_credits += parseInt(value[3]);
           });
           document.sprint_info["sum_of_credits"] = sum_of_credits;
-          document.getElementById("info-zone").innerHTML = `
+          document.getElementById("info-title").innerHTML = `
             <h1>${obj["title"]}</h1>
-            <p>Initiated by: ${obj["initiator"]}</p>
-            <p>Duration: ${obj["duration"]} min(s)</p>
-            <p>${obj["introduction"]}</p>
+          `;
+          document.getElementById("info-initiator").innerHTML = `
+            <p><strong>Initiator</strong>: ${obj["initiator"]}</strong></p>
+          `;
+          document.getElementById("info-duration").innerHTML = `
+            <p><strong>Duration</strong>: ${obj["duration"]} min(s)</p>
+          `;
+          document.getElementById('info-introduction').innerHTML = `
+            <p><strong>Introduction</strong>:<br> ${obj["introduction"]}</p>
           `;
         }
       }
   };
   xhr.send(data);
-  
+    
   // Start websocket connection
   console.log("Establishing websocket connection.");
-  var ws = new WebSocket("wss://"+ window.location.host +"/pubsub");
-  ws.addEventListener("message", (event) => {
+  document.ws = new WebSocket("wss://"+ window.location.host +"/pubsub");
+  document.ws.addEventListener("message", (event) => {
     var parser = server_message_check(event.data);
     if (!parser.success) {
       console.log(parser.message);
@@ -91,19 +105,21 @@ if (get_cookie("session_id") == "") {
       };
     }
   });
-}
+});
+
+//////////////////////////////////////////////////////////////////////////
 
 function join_sprint() {
   // send info to server
   var data = JSON.stringify({
     type: "join_sprint" 
   });
-  ws.send(data);
+  document.ws.send(data);
   // change page
-  document.getElementById("btn-zone").innerHTML = `
-    <section id="timer">
+  document.getElementById("dynamic-zone-1").innerHTML = `
+    <div id="timer">
       <button class="btn btn-primary" onclick="ready();">Ready</button>
-    </section>
+    </div>
   `
 }
 
@@ -111,6 +127,7 @@ function copy_invitation() {
   var sp = window.location.pathname.split("/");
   var sprint_id = sp[sp.length - 1];
   navigator.clipboard.writeText(sprint_id);
+  
 };
 
 function start_sprint() {
@@ -119,14 +136,14 @@ function start_sprint() {
   // show start message
   document.getElementById("chat-pane").innerHTML += `
     <div class="chat-message-container">
-      <div class="message-info">
+      <div class="message message-info">
         <p name="signature-id"><small>${timestamp}</small></p>
         <p name="message-id">sprint now starts!</p>
       </div>
     </div>`;
   document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
   document.sprint_info["tasks"].forEach(add_task_row); // show tasks
-  document.getElementById("btn-zone").innerHTML = `<div id="timer"></div>`
+  document.getElementById("dynamic-zone-1").innerHTML = `<div id="timer"></div>`
   start_timer(); // start timer
 };
 
@@ -149,6 +166,7 @@ function start_timer() {
     if (remain < 0) {
       clearInterval(x);
       document.getElementById("timer").innerHTML = "Time Up!";
+      document.getElementById("timer").style.backgroundColor = "#ffc107";
     }
   }, 1000);
 };
@@ -163,7 +181,7 @@ function send_chat_message() {
         timestamp  : timestamp,
         message    : text
   });
-  ws.send(data);
+  document.ws.send(data);
 };
 
 
@@ -173,7 +191,7 @@ function ready() {
     type : "ready",
     timestamp  : timestamp
   });
-  ws.send(data);
+  document.ws.send(data);
 };
 
 
@@ -190,7 +208,9 @@ function add_task_row(value) {
   var td = row.querySelectorAll("td");
   td[0].innerHTML = '<a href="'+ tlink +'" target="_blank">'+ ttitle +'</a>';
   td[1].textContent = tcredits;
-  td[2].innerHTML = `<button class="btn btn-secondary" onclick="finish_task('${tid}');">Finish</button>`
+  td[2].innerHTML = `
+    <button class="btn btn-secondary" onclick="finish_task('${tid}');">Finish</button>
+  `
   var tbody = document.querySelector("#tasks-tbody");
   tbody.appendChild(row);
 };
@@ -214,7 +234,7 @@ function add_sprinter_row(username) {
 function add_ready_message(username, timestamp) {
   document.getElementById("chat-pane").innerHTML += `
     <div class="chat-message-container">
-      <div class="message-info">
+      <div class="message message-info">
         <p name="signature-box"><small>${timestamp}</small></p>
         <p name="message-box"><strong>${username}</strong> is ready!</p>
       </div>
@@ -236,7 +256,7 @@ function add_task_message(username, timestamp, ttitle) {
   document.sprint_info[username + ":credits"] = c;
   document.getElementById("chat-pane").innerHTML += `
     <div class="chat-message-container">
-      <div class="message-info">
+      <div class="message message-info">
         <p id="signature-box"><small>${timestamp}</small></p>
         <p id="message-box"><strong>${username}</strong> completed ${ttitle}!</p>
       </div>
@@ -248,8 +268,8 @@ function add_task_message(username, timestamp, ttitle) {
 function add_chat_message(username, message, timestamp) {
   document.getElementById("chat-pane").innerHTML += `
     <div class="chat-message-container">
-    <div class="message-user">
-        <p name="signature-box"><small>${timestamp}</small><br><strong>${username}</strong></p>
+    <div class="message message-user">
+        <p name="signature-box"><strong>${username}</strong>, <small>${timestamp}</small></p>
         <p name="message-box">${message}</p>
       </div>
     </div>`;
@@ -271,7 +291,7 @@ function finish_task(tid) {
     task_id   : tid
   });
   console.log(data);
-  ws.send(data);
+  document.ws.send(data);
 };
 
 function refresh_sprinter_row(username, timestamp, tcredits) {

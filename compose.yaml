@@ -14,6 +14,6 @@ services:
 
 secrets:
   ssl_certfile:
-    file: ./secrets/ssl_certs/test.crt
+    file: /etc/ssl/certs/test.crt
   ssl_keyfile:
-    file: ./secrets/ssl_certs/test.key
+    file: /etc/ssl/certs/test.key

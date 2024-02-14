@@ -47,11 +47,11 @@ async def incr_sprinter_count(sprint_id):
     r.quit()
     return res
 
-async def incr_ready_count(sprint_id):
+async def add_user_ready(sprint_id, username):
     r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
-    res = r.incr(sprint_id + ":NUM_OF_READY") 
+    added = r.sadd(sprint_id + ":ready", ) 
     r.quit()
-    return res
+    return added
 
 
 async def get_sprinter_count(sprint_id):

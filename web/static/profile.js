@@ -41,8 +41,3 @@ function join_sprint() {
    var sprint_id = document.getElementById("sprint_id_box").value;
    my_redirect("/sprint/" + sprint_id, "https");
 };
-
-function search() {
-   var query = document.getElementById("search_query_box_id").value;
-   // to be completed
-};
