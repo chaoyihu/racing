@@ -5,7 +5,7 @@ import threading
 import asyncio
 from tornado.websocket import WebSocketHandler
 from utils.mycookie import get_cookie
-from utils.myredis import incr_sprinter_count, get_sprinter_count, publish, add_user_ready
+from utils.myredis import add_user_sprinter, add_user_ready, publish
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -31,7 +31,7 @@ class PubsubHandler(WebSocketHandler):
                 "name": username
             }
             success = await publish("ch+" + self.sprint_id, json.dumps(data))
-            success = await incr_sprinter_count(self.sprint_id)
+            success = await add_user_sprinter(self.sprint_id, username)
         if data["type"] == "chat_message":
             username = self.r.get(self.session_id + ":username")
             data["publisher"] = username
@@ -39,12 +39,10 @@ class PubsubHandler(WebSocketHandler):
         if data["type"] == "ready":
             username = self.r.get(self.session_id + ":username")
             data["publisher"] = username
-            added = await add_user_ready(self.sprint_id, username)
-            if added:
+            added, all_ready = await add_user_ready(self.sprint_id, username)
+            if added:    # send user ready message
                 success = await publish("ch+" + self.sprint_id, json.dumps(data))
-            else: # user exists in the ready set
-            num_of_sprinter = await get_sprinter_count(self.sprint_id)
-            if num_of_ready == num_of_sprinter:
+            if all_ready:
                 data = {
                     "type": "start_sprint"
                 }

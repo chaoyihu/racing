@@ -5,6 +5,7 @@ services:
     image: "redis:alpine"
     build: ./redis
   web:
+    image: "huchaoyi/sprintingweb:latest"
     build: ./web
     ports:
       - 443:443

@@ -17,7 +17,7 @@ async def add_task(tid, ttitle, tdescription, tcredits):
         r.quit()
         return False
 
-async def add_sprint(rid, rtitle, rintroduction, rduration, rinitiator):
+async def add_sprint_event(rid, rtitle, rintroduction, rduration, rinitiator):
     try:
         r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
         r.set(rid + ":title", rtitle)
@@ -41,28 +41,18 @@ async def publish(channel, data):
         r.quit()
         return False
 
-async def incr_sprinter_count(sprint_id):
+async def add_user_sprinter(sprint_id, username):
     r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
-    res = r.incr(sprint_id + ":NUM_OF_sprinter") 
+    res = r.sadd(sprint_id + "sprinter_set", username)
     r.quit()
     return res
 
 async def add_user_ready(sprint_id, username):
     r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
-    added = r.sadd(sprint_id + ":ready", ) 
+    added = r.sadd(sprint_id + ":ready_set", username)
+    sprinter_count = int(r.scard(sprint_id + "sprinter_set"))
+    ready_count = int(r.scard(sprint_id + ":ready_set"))
     r.quit()
-    return added
-
-
-async def get_sprinter_count(sprint_id):
-    r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
-    res = r.get(sprint_id + ":NUM_OF_sprinter") 
-    r.quit()
-    return int(res)
-
-async def get_ready_count(sprint_id):
-    r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
-    res = r.get(sprint_id + ":NUM_OF_READY") 
-    r.quit()
-    return int(res)
+    all_ready = (sprinter_count == ready_count)
+    return added, all_ready
 

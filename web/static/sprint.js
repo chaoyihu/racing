@@ -95,10 +95,10 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         })
         // add task message
-        add_task_message(username, timestamp, ttitle);
+        add_task_message(username, timestamp, tid, ttitle);
         // add credit to sprinter row and refresh standing board.
         refresh_sprinter_row(username, timestamp, tcredits);
-        refresh_leaderboard();
+        // refresh_leaderboard();
       };
       if (obj["type"] == "start_sprint") {
         start_sprint();
@@ -186,6 +186,9 @@ function send_chat_message() {
 
 
 function ready() {
+  document.getElementById("timer").innerHTML=`
+    <p>Waiting for other sprinters to get ready...</p>
+  `;
   timestamp = new Date().toUTCString();
   data = JSON.stringify({
     type : "ready",
@@ -209,7 +212,7 @@ function add_task_row(value) {
   td[0].innerHTML = '<a href="'+ tlink +'" target="_blank">'+ ttitle +'</a>';
   td[1].textContent = tcredits;
   td[2].innerHTML = `
-    <button class="btn btn-secondary" onclick="finish_task('${tid}');">Finish</button>
+    <button class="btn btn-action" onclick="finish_task('${tid}');">Finish</button>
   `
   var tbody = document.querySelector("#tasks-tbody");
   tbody.appendChild(row);
@@ -244,7 +247,7 @@ function add_ready_message(username, timestamp) {
 
 
 
-function add_task_message(username, timestamp, ttitle) {
+function add_task_message(username, timestamp, tid, ttitle) {
   var tcredits = 0;
   document.sprint_info["tasks"].forEach(function (value) {
         if (value[2] == ttitle) {
@@ -258,9 +261,13 @@ function add_task_message(username, timestamp, ttitle) {
     <div class="chat-message-container">
       <div class="message message-info">
         <p id="signature-box"><small>${timestamp}</small></p>
-        <p id="message-box"><strong>${username}</strong> completed ${ttitle}!</p>
+        <p id="message-box"><strong>${username}</strong> completed task: ${ttitle}!</p>
       </div>
     </div>`;
+    document
+      .getElementById(`task_row_${tid.split('+').slice(-1)}`)
+      .querySelectorAll("td")[2]
+      .innerHTML = 'Completed';
   document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
 };
 

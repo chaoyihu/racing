@@ -5,7 +5,7 @@ import uuid
 from random import choice
 from tornado.web import RequestHandler
 from utils.mycookie import get_cookie
-from utils.myredis import add_task, add_sprint
+from utils.myredis import add_task, add_sprint_event
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -51,7 +51,7 @@ class SprintPlanningHandler(RequestHandler):
         r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
         username = r.get(session_id + ":username")
         r.quit()
-        _ = await add_sprint(sprint_id, rtitle, rintroduction, rduration, username)
+        _ = await add_sprint_event(sprint_id, rtitle, rintroduction, rduration, username)
 
         # write task info to database
         for task in data["tasks"]:
