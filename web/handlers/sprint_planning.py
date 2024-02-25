@@ -71,6 +71,6 @@ class SprintPlanningHandler(RequestHandler):
         self.write(json.dumps({
             "type"         : "redirect",
             "sprint_id"    : sprint_id,
-            "protocol"     : "https",
-            "redirect_url" : "/sprint/" + sprint_id
+            "protocol"     : "http",
+            "redirect_url" : "/sprinting/sprint/" + sprint_id
             }))
