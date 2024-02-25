@@ -10,8 +10,8 @@ function register() {
             username: username, 
             password: password
         });
-        var url = window.location.host + "/register";
-        var protocol = "https";
+        var url = window.location.host + "/sprinting/register";
+        var protocol = "http";
         var xhr = new XMLHttpRequest();
         if (!url.startsWith(protocol)) {
             url = protocol + "://" + url;

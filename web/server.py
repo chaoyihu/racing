@@ -50,13 +50,9 @@ def main():
     
     application = Application(routing_table)
     server = HTTPServer(
-        application,
-        ssl_options = {
-            "certfile": os.path.join(os.getenv("SECRETS_PATH"), "ssl_certfile"),
-            "keyfile" : os.path.join(os.getenv("SECRETS_PATH"), "ssl_keyfile")
-        }
+        application
     )
-    port = 443
+    port = 8000
     server.listen(port)
     print("Server listening on port %s ...\n" % port)
 

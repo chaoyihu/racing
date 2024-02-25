@@ -10,8 +10,8 @@ function login() {
             username: username, 
             password: password
         });
-        var url = window.location.host + "/login";
-        var protocol = "https";
+        var url = window.location.host + "/sprinting/login";
+        var protocol = "http";
         var xhr = new XMLHttpRequest();
         if (!url.startsWith(protocol)) {
             url = protocol + "://" + url;

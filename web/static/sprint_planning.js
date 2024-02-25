@@ -3,7 +3,7 @@ var all_tasks = new Map();  // all dom nodes for task rows
 
 
 function add_task() {
-  document.querySelector("#confirm_edit").addEventListener("click", function() {
+  document.querySelector("#confirm_edit").addEventListener("click", function clickHandler() {
     confirm_edit("new_tid");
   });
   document.getElementById("complete_overlay").style.display = "block";
@@ -11,7 +11,7 @@ function add_task() {
 
 
 function edit_task(tid) {
-  document.querySelector("#confirm_edit").addEventListener("click", function() {
+  document.querySelector("#confirm_edit").addEventListener("click", function clickHandler() {
     confirm_edit(tid);
   });
   document.getElementById("complete_overlay").style.display = "block";
@@ -20,13 +20,6 @@ function edit_task(tid) {
   document.getElementById("task_title_box_id").value = row.info["ttitle"];
   document.getElementById("description_box_id").value = row.info["tdescription"];
   document.getElementById("credit_box_id").value = row.info["tcredits"];
-};
-
-
-function delete_task(tid) {
-  document.getElementById(`task_row_${tid.split('+').slice(-1)}`).remove();
-  all_tasks.delete(tid);
-  console.log(`Deleting task, tid: ${tid}`);
 };
 
 
@@ -46,20 +39,34 @@ function confirm_edit(tid) {
   tcredits = document.getElementById("credit_box_id").value;
   // show new row on page or update row if just editing existing task.
   insert_task_row(tid, ttitle, tdescription, tcredits, existing);
+  // close overlay
+  overlay_off();
+};
+
+function cancel_edit() {
+  console.log("cancel edit");
+  overlay_off();
+}
+
+
+function overlay_off() {
+  document.getElementById("complete_overlay").style.display = "none";
   //remove event listener
   var old_element = document.getElementById("confirm_edit");
   var new_element = old_element.cloneNode(true);
   old_element.parentNode.replaceChild(new_element, old_element);
-  // close overlay and clear input fields
-  overlay_off();
+  // clear inputs
   document.getElementById("task_title_box_id").value = "";
   document.getElementById("description_box_id").value = "";
   document.getElementById("credit_box_id").value = null;
-};
-
-function overlay_off() {
-  document.getElementById("complete_overlay").style.display = "none";
 }
+
+
+function delete_task(tid) {
+  document.getElementById(`task_row_${tid.split('+').slice(-1)}`).remove();
+  all_tasks.delete(tid);
+  console.log(`Deleting task, tid: ${tid}`);
+};
 
 
 function insert_task_row(tid, ttitle, tdescription, tcredits, existing) {
@@ -104,8 +111,8 @@ function initiate() {
   });
   console.log(data);
   var xhr = new XMLHttpRequest();
-  var url = window.location.href;
-  var protocol = "https";
+  var url = window.location.host + "/sprinting/sprint/planning";
+  var protocol = "http";
   if (!url.startsWith(protocol)) {
       url = protocol + "://" + url;
   };

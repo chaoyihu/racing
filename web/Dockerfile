@@ -46,7 +46,7 @@ USER appuser
 COPY . .
 
 # Expose the port that the application listens on.
-EXPOSE 443
+EXPOSE 8000
 
 # Run the application.
 CMD python3 server.py

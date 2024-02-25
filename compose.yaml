@@ -5,16 +5,7 @@ services:
     image: "redis:alpine"
     build: ./redis
   web:
-    image: "huchaoyi/sprintingweb:latest"
+    # image: "huchaoyi/sprintingweb:ec2.nginx"
     build: ./web
     ports:
-      - 443:443
-    secrets:
-      - ssl_certfile
-      - ssl_keyfile
-
-secrets:
-  ssl_certfile:
-    file: /etc/ssl/certs/test.crt
-  ssl_keyfile:
-    file: /etc/ssl/certs/test.key
+      - 8000:8000

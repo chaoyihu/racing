@@ -32,8 +32,8 @@ class RegisterHandler(RequestHandler):
             session_id = await register_session(data["username"])
             self.write(json.dumps({
                 "type": "redirect",
-                "protocol": "https",
-                "redirect_url": "/profile/user/" + data["username"],
+                "protocol": "http",
+                "redirect_url": "/sprinting/profile/user/" + data["username"],
                 "session_id": session_id,
                 }))
             print(data["username"], r.get(session_id +":username"))

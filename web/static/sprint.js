@@ -1,6 +1,6 @@
 // In case user visits this page without logging in
 if (get_cookie("session_id") == "") {
-  my_redirect("/login", "https");
+  my_redirect("/sprinting/login", "http");
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
       "type"    : "get_sprint_info"
   });
   var xhr = new XMLHttpRequest();
-  var url = window.location.href;
-  var protocol = "https";
+  var url = window.location.host + "/sprinting/sprint/" + sprint_id;
+  var protocol = "http";
   if (!url.startsWith(protocol)) {
       url = protocol + "://" + url;
   };
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
   // Start websocket connection
   console.log("Establishing websocket connection.");
-  document.ws = new WebSocket("wss://"+ window.location.host +"/pubsub");
+  document.ws = new WebSocket("ws://"+ window.location.host +"/sprinting/pubsub");
   document.ws.addEventListener("message", (event) => {
     var parser = server_message_check(event.data);
     if (!parser.success) {
@@ -105,6 +105,14 @@ document.addEventListener('DOMContentLoaded', function() {
       };
     }
   });
+  // start web socket heartbeat every 30 seconds
+  setInterval(function () {
+    if (document.ws && document.ws.readyState === WebSocket.OPEN) {
+      document.ws.send(JSON.stringify({
+        type: "heartbeat"
+      }));
+    }
+  }, 30000);
 });
 
 //////////////////////////////////////////////////////////////////////////

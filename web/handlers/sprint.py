@@ -34,7 +34,7 @@ class SprintHandler(RequestHandler):
                 tid = k.split(":")[0]
                 ttitle = r.get(tid + ":title")
                 tcredits = r.get(tid + ":credits")
-                all_tasks.add((tid, "/task/" + tid, ttitle, tcredits)) # [tlink, ttitle]
+                all_tasks.add((tid, "/sprinting/task/" + tid, ttitle, tcredits)) # [tlink, ttitle]
             all_tasks = [[tid, link, title, credits] for tid, link, title, credits in all_tasks]
             all_tasks.sort()
             r.quit()

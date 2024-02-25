@@ -7,9 +7,9 @@ function get_user_info() {
    let data = JSON.stringify({
       "session_id": get_cookie("session_id")
    });
-   var url = window.location.host + "/profile/action/get_user_info";
+   var url = window.location.host + "/sprinting/profile/action/get_user_info";
    console.log(url);
-   var protocol = "https";
+   var protocol = "http";
    var xhr = new XMLHttpRequest();
    if (!url.startsWith(protocol)) {
        url = protocol + "://" + url;
@@ -34,10 +34,10 @@ function get_user_info() {
 
  
 function new_sprint() {
-   my_redirect("/sprint/planning", "https"); 
+   my_redirect("/sprinting/sprint/planning", "http"); 
 };
 
 function join_sprint() {
    var sprint_id = document.getElementById("sprint_id_box").value;
-   my_redirect("/sprint/" + sprint_id, "https");
+   my_redirect("/sprinting/sprint/" + sprint_id, "http");
 };
