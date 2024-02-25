@@ -12,6 +12,9 @@ load_dotenv()
 
 
 class PubsubHandler(WebSocketHandler):
+
+    def check_origin(self, origin):
+        return True
     
     async def open(self):
         self.r = redis.Redis(host=os.getenv("REDIS_HOST"), charset="utf-8", decode_responses=True)
@@ -24,6 +27,12 @@ class PubsubHandler(WebSocketHandler):
     async def on_message(self, message):
         print("Server receive message:", message)
         data = json.loads(message)
+
+        if data["type"] == "heartbeat":
+            print("Keep-alive: Reading web socket heartbeat from", self.session_id)
+            return
+        
+
         if data["type"] == "join_sprint":
             username = self.r.get(self.session_id + ":username")
             data = {
