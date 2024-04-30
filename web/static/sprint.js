@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
           });
           document.sprint_info["sum_of_credits"] = sum_of_credits;
           document.getElementById("info-title").innerHTML = `
-            <h1>${obj["title"]}</h1>
+            <h3>${obj["title"]}</h3>
           `;
           document.getElementById("info-initiator").innerHTML = `
             <p><strong>Initiator</strong>: ${obj["initiator"]}</strong></p>
@@ -146,7 +146,7 @@ function start_sprint() {
     <div class="chat-message-container">
       <div class="message message-info">
         <p name="signature-id"><small>${timestamp}</small></p>
-        <p name="message-id">sprint now starts!</p>
+        <p name="message-id">Sprint now starts!</p>
       </div>
     </div>`;
   document.getElementById("chat-pane").scrollTop = 9e9; // always scroll to bottom
@@ -173,8 +173,8 @@ function start_timer() {
     // If the count down is finished, write some text
     if (remain < 0) {
       clearInterval(x);
-      document.getElementById("timer").innerHTML = "Time Up!";
-      document.getElementById("timer").style.backgroundColor = "#ffc107";
+      document.getElementById("timer").innerHTML = "<h5>Time Up!</h5>";
+      document.getElementById("timer").style.backgroundColor = "var(--warning)";
     }
   }, 1000);
 };
@@ -220,7 +220,7 @@ function add_task_row(value) {
   td[0].innerHTML = '<a href="'+ tlink +'" target="_blank">'+ ttitle +'</a>';
   td[1].textContent = tcredits;
   td[2].innerHTML = `
-    <button class="btn btn-action" onclick="finish_task('${tid}');">Finish</button>
+    <button class="btn btn-bright" onclick="finish_task('${tid}');">Finish</button>
   `
   var tbody = document.querySelector("#tasks-tbody");
   tbody.appendChild(row);

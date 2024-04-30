@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-      <link rel="stylesheet" type="text/css" href="/sprinting/static/style.css">
-      <link rel="icon" type="image/x-icon" href="/sprinting/static/imgs/favicon.ico">
+      <link rel="stylesheet" type="text/css" href="/sprinting/static/common.css">
+      <link rel="stylesheet" type="text/css" href="/sprinting/static/sprint_planning.css">
     </head>
   
     <body>
@@ -10,8 +10,9 @@
       <script type="text/javascript" src="/sprinting/static/common.js"></script>
       <script type="text/javascript" src="/sprinting/static/sprint_planning.js"></script>
   
-      <div id="complete_overlay" style="padding: 10%;">
-        <div style="background-color: white; padding: 10px;">
+      <div id="complete_overlay">
+        <a id="cancel_edit" onclick="cancel_edit();">X Cancel</a>
+        <div id="task_edit_pane">
           <h3>Edit task</h3>
           <label><b>Task title</b></label><br>
           <input type="text" id="task_title_box_id"><br>
@@ -20,43 +21,42 @@
           <label><b>Assign credit(s)</b></label><br>
           <input type="number" id="credit_box_id">
           <div style="padding: 10px; text-align: center;">
-            <button id="confirm_edit" class="btn btn-primary">Confirm Edit</button>
-            <button id="cancel_edit" class="btn btn-secondary" onclick="cancel_edit();">Cancel</button>
+            <button id="confirm_edit" class="btn btn-secondary">Confirm Edit</button>
           </div>
         </div>
       </div>
-      
-      <div class="sprint-info-pane">
-        <label for="sprint-title"><h3><b>Title of sprint</b></h3></label>
+
+      <div id="sprint-info-pane">
+        <h3>Title of sprint</h3>
         <p><input type="text" id="sprint-title-box-id"></p>
-        <label for="sprint-introduction"><h3><b>Introduction</b></h3></label>
+        <h3>Introduction</h3>
         <p><textarea id="sprint-introduction-box-id"></textarea></p>
-        <label for="sprint-duration"><h3><b>Duration (in minutes)</b></h3></label>
-        <p><input type="number" id="sprint-duration-box-id"></p>
-        <h3 for="task-list"><b>Task List</b></h3>
-        <button id="add_task_btn" class="btn btn-info" onclick='add_task("new_tid")';> Add Task</button>
-        <div style="padding:10px">
-          <table id="task-table" class="table table-striped" style="width:80%; padding:10px;">
-            <thead>
-            <tr>
-                <th style="width:60%">Task</th>
-                <th style="width:20%">Credits</th>
-                <th style="width:20%">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-              <!-- data should be included here -->
-            </tbody>
-          </table>
-          <template id="task_row">
-            <tr id="task_row_n">
-              <td class="record"></td>
-              <td class="record"></td>
-              <td class="record"></td>
-            </tr>
-          </template>
-        </div>
-        <button id="initiate-btn" class="btn btn-action" onclick="initiate();">Initiate</button>
+        <h3>Duration (in minutes)</h3>
+        <p><input type="number" id="sprint-duration-box-id" min="1"></p>
+        <h3 for="task-list">Task List</h3>
+
+        <table id="task-table" class="table table-striped">
+          <thead>
+          <tr>
+              <th style="width:60%">Task</th>
+              <th style="width:20%">Credits</th>
+              <th style="width:20%">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+            <!-- data should be included here -->
+          </tbody>
+        </table>
+        <button id="add_task_btn" class="btn btn-secondary" onclick='add_task("new_tid")';> Add Task</button>
+        <template id="task_row">
+          <tr id="task_row_n">
+            <td class="record"></td>
+            <td class="record"></td>
+            <td class="record"></td>
+          </tr>
+        </template>
+
+        <button id="initiate-btn" class="btn btn-primary" onclick="initiate();">Initiate</button>
       </div>
   
   </body>

@@ -22,11 +22,12 @@ function login() {
             var parser = server_message_check(xhr.responseText);
             if (!parser.success) {
                 console.log(parser.message);
+                alert("Something's wrong, please try again.")
             } else {
                 var obj = parser.data;
                 console.log(obj);
                 if (obj["type"] == "alert") {
-                    console.log(obj["message"]);
+                    alert(obj["message"]);
                 } else {
                     set_cookie("session_id", obj["session_id"], 10);
                     my_redirect(obj["redirect_url"], obj["protocol"]);

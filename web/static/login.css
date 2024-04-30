@@ -1,0 +1,33 @@
+/* Login page*/
+#login-pane {
+    height: 50vh;
+    width: 50vw;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    margin: auto; /* Center horizontally with auto margin */
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Arrange children vertically */
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
+    text-align: center;
+    font-size: 18px;
+
+    background-color: white;
+    border-radius: 4px;
+}
+
+#login-pane p ,
+#login-pane form {
+    width: 100%;
+    margin-top: 10px; /* Add margin to top */
+    margin-bottom: 10px; /* Add margin to bottom */
+}
+
+#login-pane input,
+#login-pane button {
+    width: 60%;
+    font-size: 18px;
+}

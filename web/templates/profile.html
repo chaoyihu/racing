@@ -2,7 +2,8 @@
 <html lang="en-US">
   
   <head>
-    <link rel="stylesheet" type="text/css" href="/sprinting/static/style.css" />
+    <link rel="stylesheet" type="text/css" href="/sprinting/static/common.css" />
+    <link rel="stylesheet" type="text/css" href="/sprinting/static/profile.css" />
   </head>
 
   <body>
@@ -14,33 +15,34 @@
     <div id="profile-main-container">
       
       <div id="user-info-pane">
-        <img class="user-profile-pic" src="/sprinting/static/imgs/default-profile-pic.jpg">
+        <img class="user-profile-pic" src="/sprinting/static/imgs/default-profile-pic.webp">
         <div id="user-info">
           User info
         </div>
       </div>
       
       <div class="user-action-pane">
-          <div>
-            <h3>Plan a new sprint</h3>
-            <p>Plan a new sprint for your team:</p>
-            <ul>
-              <li>Choose a descriptive title for the sprint event.</li>
-              <li>Write an introduction, setting clear goals and introducing main methodology.</li>
-              <li>Define specific tasks to be completed.</li>
-              <li>Set a timer for the event.</li>
-            </ul>
-            <button id="new_sprint_btn" class="btn btn-action" onclick="new_sprint();">Start sprint planning</button><br>
-          </div>
-          <div>
-            <h3>Join a sprint</h3>
-            <p>If your team has an exiting sprint event, you can ask the creator for the sprint ID and paste it below to join.</p>
-            <input type="text" id="sprint_id_box" placeholder="sprint id shared by others">
-            <button id="join_sprint_btn" class="btn btn-action" onclick="join_sprint();">Join sprint</button><br>
-          </div>
-          
-      </div>
 
+        <h3>Plan a new sprint</h3>
+        <div id="plan-new-sprint">
+          <p>Plan a new sprint for your team:</p>
+          <ul>
+            <li>Choose a descriptive title for the sprint event.</li>
+            <li>Write an introduction, setting clear goals and introducing main methodology.</li>
+            <li>Define specific tasks to be completed.</li>
+            <li>Set a timer for the event.</li>
+          </ul>
+          <button id="new_sprint_btn" class="btn btn-primary" onclick="new_sprint();">Start sprint planning</button><br>
+        </div>
+
+        <h3>Join a sprint</h3>
+        <div id="join-a-sprint">
+          <p>If your team has an exiting sprint event, you can ask the creator for the sprint ID and paste it below to join.</p>
+          <input type="text" id="sprint_id_box" placeholder="Paste sprint id shared by others"><br>
+          <button id="join_sprint_btn" class="btn btn-primary" onclick="join_sprint();">Join sprint</button><br>
+        </div> 
+      </div>
+      
     </div>
 
   </body>

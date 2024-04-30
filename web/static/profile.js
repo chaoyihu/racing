@@ -24,8 +24,7 @@ function get_user_info() {
          var obj = parser.data;
          console.log(obj);
          document.getElementById("user-info").innerHTML = `
-            <p>username: ${obj["username"]}</p>
-            <p>level: ${obj["user_level"]}</p>
+            <b>${obj["username"]}</b>
          `;
       }
    };

@@ -1,0 +1,81 @@
+/* Sprint planning */
+#sprint-info-pane {
+  padding: 30px 25%;
+  display: flex;
+  flex-direction: column;
+  height: 94vh;
+  width: 94vw;
+  background: white;
+  position: fixed;
+  overflow-y: auto;
+  top: 3vh;
+  left: 3vw;
+}
+
+#add_task_btn {
+  padding: 10px 16px;
+  width: auto;
+  margin: 0 auto;
+}
+
+#initiate-btn {
+  margin-top: 30px;
+}
+
+#sprint-introduction-box-id {
+  height: 200px;
+}
+
+#complete_overlay {
+  display: block;
+  position: fixed;
+  width: 40vw;
+  height: 100vh;
+  right: -40vw;
+  top: 0;
+  background-color: var(--light-gray);
+  z-index: 999;
+  padding: 30px;
+}
+
+#task-edit-pane {
+  padding-left: 20px;
+  padding-top: 20px;
+  background: transparent;
+}
+
+input,
+textarea {
+  width: 100%;
+  font-size: 18px;
+}
+
+#cancel_edit {
+  cursor: pointer;
+}
+
+.slide-in {
+  animation: slidein 0.5s forwards;
+}
+
+.slide-out {
+  animation: slideout 0.5s forwards;
+}
+
+@keyframes slidein {
+  from {
+    right: -40vw;
+  }
+  to {
+    right: 0;
+  }
+}
+
+@keyframes slideout {
+  from {
+    right: 0;
+  }
+  to {
+    right: -40vw;
+  }
+}

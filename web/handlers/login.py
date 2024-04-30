@@ -57,13 +57,13 @@ class LoginHandler(RequestHandler):
             password = credential["password"]
             db_password = r.get(username + ":password")
             if not db_password:
-                return False, "Username does not exist."
+                return False, "Invalid credentials."
             if password != db_password:
-                return False, "Wrong password."
+                return False, "Invalid credentials."
         if credential["type"] == "session_id":
             username = r.get(credential["session_id"] + ":username")
             if not username:
-                return False, "Invalid session id. Need to log in."
+                return False, "Session expired. Please login again."
         # assign/renew session id.
         session_id = await register_session(username)
         return True, session_id

@@ -1,0 +1,55 @@
+/* Index page*/
+#index-page-body {
+  height: 100vh;
+  width: 100vw;
+  background: transparent;
+}
+
+.banner-box {
+  text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.banner-box a {
+  /* Apply gradient background to text */
+  background-image: linear-gradient(var(--primary-dark), var(--secondary-dark));
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Hide original text */
+  color: transparent;
+  
+  font-size: 100px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.banner-box :hover {
+  text-shadow: 0 0 20px white;
+}
+
+/* cursor effect */
+.circle {
+  height: 36px;
+  width: 36px;
+  border-radius: 36px;
+  background-color: var(--primary-dark);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.confetti {
+  height: 36px;
+  width: 36px;
+  border-radius: 36px;
+  background-color: var(--primary-dark);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}

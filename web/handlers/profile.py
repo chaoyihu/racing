@@ -28,6 +28,5 @@ class ProfileActionHandler(RequestHandler):
             username = r.get(session_id + ":username")
             self.write(json.dumps({
                 "type": "user_data",
-                "username": username,
-                "user_level": 0
+                "username": username
                 }))

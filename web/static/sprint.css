@@ -1,0 +1,127 @@
+/* Sprint page */
+#main-view {
+  height: 94vh;
+  width: 94vw;
+  background: white;
+  position: fixed;
+  top: 3vh;
+  left: 3vw;
+}
+
+#team-id-copy {
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Arrange children vertically */
+  }
+  
+  #team-id-copy p{
+    width: 100%;
+    padding: 10px 10px 10px 10px;
+    text-align: center;
+    border: 2px solid var(--dark-gray);
+    font-weight: bold;
+    font-size: large;
+  }
+  
+  #team-id-copy p:hover {
+    background-color: var(--warning);
+  }
+  
+  #team-id-copy button{
+    width: 100%;
+  }
+  
+  #timer {
+    height: 60px;
+    padding: 10px 0;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  #timer .btn,
+  #timer h5 {
+    font-weight: bold;
+    width: 100%;
+  }
+  
+  #left-pane {
+    float: left;
+    width: 30%;
+    height: 100%;
+    overflow-y: scroll;
+    padding: 30px 30px 30px 30px;
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Arrange children vertically */
+  }
+  
+  #info-header {
+    text-align: center;
+  }
+  
+  #mid-pane {
+    float: left;
+    width: 40%;
+    height: 100%;
+    border-style: none none none ridge;
+  }
+  
+  #task-pane {
+    height: 50%; overflow-y: scroll; padding: 10px;
+  }
+  
+  #sprinter-pane {
+    height: 50%; overflow-y: scroll; padding: 10px; border-style: ridge none none none;
+  }
+  
+  #right-pane {
+    width: 30%;
+    float: left;
+    height: 100%;
+    border-style: none none none ridge;
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Arrange children vertically */
+  }
+  
+  #chat-pane {
+    height: 70%;
+    overflow-y: scroll;
+    padding: 10px;
+    padding-bottom: 0;
+  }
+  
+  #input-pane {
+    display: flex;
+    flex-direction: column;
+    height: 30%;
+    padding: 10px;
+  }
+  
+  .message {
+    margin-top: 2px;
+    padding: 5px 5px 5px 5px;
+  }
+  
+  .message p {
+    margin: 0;
+    padding-top: 2px;
+  }
+  
+  .message-info {
+    background-color:var(--secondary);
+  }
+  
+  .message-user {
+    background-color: var(--light-gray);
+  }
+  
+  #chat-input {
+    flex: 1;     /* fit to height */
+    width: 100%;
+    margin: 0;
+    margin-bottom: 0;
+  }
+  
+  #send-btn {
+    width: 100%;
+    margin: 10px 0;
+  }
+  
